@@ -19,7 +19,7 @@ import tweepy
 import active
 
 #creating a separate folder for  each tweet
-query='ShameOnAnjana'
+query='Hiranandani'
 profile_file=query+'/Profiles.csv'
 status_file=query+'/status.csv'
 tweets_file=query+'/tweets.pickle'
@@ -29,6 +29,7 @@ try:
     h=open(tweets_file,'rb')
 except:
     print("Run the initial code first.")
+
 stored_tweets=pickle.load(h)
 
 

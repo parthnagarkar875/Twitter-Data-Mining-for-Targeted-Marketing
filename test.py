@@ -57,7 +57,7 @@ def get_replies(tweet):
 
 if __name__ == "__main__":
     logging.basicConfig(filename="replies.log", level=logging.INFO)
-    tweets_file = sys.argv[1]
+    tweets_file = 'Hiranandani/tweets.pickle'
     for tweet in get_tweets(tweets_file):
         for reply in get_replies(tweet):
             print(reply.AsJsonString())

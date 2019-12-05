@@ -4,9 +4,12 @@ Created on Tue Dec  3 14:15:51 2019
 
 @author: Parth
 """
+import urllib
+import re
 import io
 import re
 import sys
+from time import sleep
 import pickle
 import os
 from math import ceil
@@ -32,7 +35,7 @@ for i in reply:
 '''
 
 #creating a separate folder for  each tweet
-query='ShameOnAnjana'
+query='Hiranandani'
 profile_file=query+'/Profiles.csv'
 status_file=query+'/status.csv'
 tweets_file=query+'/tweets.pickle'
@@ -47,9 +50,28 @@ tweets=pickle.load(h)
 
 status_and_replies=dict()
 
+
+def get_user_ids_of_post_likes(post_id):
+    try:
+        json_data = urllib.request.urlopen('https://twitter.com/i/activity/favorited_popup?id=' + str(post_id)).read()
+        json_data = json_data.decode('utf-8')
+        found_ids = re.findall(r'data-user-id=\\"+\d+', json_data)
+        unique_ids = list(set([re.findall(r'\d+', match)[0] for match in found_ids]))
+        return unique_ids
+
+    except urllib.request.HTTPError:
+        return False
+
+likers=list()
+for i in tweets: 
+    id1=get_user_ids_of_post_likes(i.id)
+    likers.extend(id1)
+
+
 url1='https://twitter.com/'
 try: 
     for j in tweets:
+        sleep(3)
         reply=api.search(q=j.user.screen_name,since_id=j.id,count=10000)
         print("For User: ",j.user.screen_name)
         url3=url1
