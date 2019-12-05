@@ -64,8 +64,9 @@ def get_user_ids_of_post_likes(post_id):
 
 likers=list()
 for i in tweets: 
-    id1=get_user_ids_of_post_likes(i.id)
-    likers.extend(id1)
+    if 'hiranandani'not in (i.user.screen_name).lower():
+        id1=get_user_ids_of_post_likes(i.id)
+        likers.extend(id1)
 
 
 url1='https://twitter.com/'
