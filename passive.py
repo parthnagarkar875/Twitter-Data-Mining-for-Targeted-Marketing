@@ -68,7 +68,7 @@ for i in tweets:
         id1=get_user_ids_of_post_likes(i.id)
         likers.extend(id1)
 
-
+print("Obtained Likers' list. Getting replies list.")
 url1='https://twitter.com/'
 try: 
     for j in tweets:
@@ -89,8 +89,3 @@ try:
         status_and_replies[url3]=li
 except Exception as e:
     print(e)
-
-
-
-
-
