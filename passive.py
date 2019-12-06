@@ -50,7 +50,6 @@ except:
 
 tweets=pickle.load(h)
 
-status_and_replies=dict()
 
 
 def get_user_ids_of_post_likes(post_id):
@@ -73,8 +72,6 @@ def get_uname(tweets):
                 id1=get_user_ids_of_post_likes(i.id)
                 likers.extend(id1)        
                 set1.add(i.id)
-    return likers
-'''
     set2=set()
     likers_uname=list()
     for i in likers:   
@@ -83,8 +80,9 @@ def get_uname(tweets):
             likers_uname.append(u.screen_name)            
             set2.add(i)
 
+
+
     return likers_uname
-'''
 
 
 
@@ -100,30 +98,29 @@ print("--- %s seconds ---" % (time.time() - start_time))
 
 
 
-'''
+li=list()
+
 print("Obtained Likers' list. Getting replies list.")
 url1='https://twitter.com/'
 try: 
     for j in tweets:
-        sleep(7)
-        reply=api.search(q=j.user.screen_name,since_id=j.id,count=10000)
-        print("For User: ",j.user.screen_name)
-        url3=url1
-        url3+=j.user.screen_name+'/status/'+str(j.id) 
-        li=list()
-        for i in reply:
-            if i.in_reply_to_status_id==j.id:
-                url2=url1
-                url2+=i.user.screen_name+'/status/'+str(i.id)
+        if 'hirandandani' not in (j.user.screen_name).lower():
+            reply=api.search(q=j.user.screen_name,since_id=j.id,count=10000)
+            print("For User: ",j.user.screen_name)
+            url3=url1
+            url3+=j.user.screen_name+'/status/'+str(j.id) 
+            for i in reply:
+                if i.in_reply_to_status_id==j.id:
+                    url2=url1
+                    url2+=i.user.screen_name+'/status/'+str(i.id)
+                    
+                    li.append(url2)                
+                    print(url2)
+                print("\n\n")
                 
-                li.append(url2)                
-                print(url2)
-            print("\n\n")
-        status_and_replies[url3]=li
 except Exception as e:
     print(e)
 
-'''
 
 
 
