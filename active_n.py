@@ -34,16 +34,19 @@ stored_tweets=pickle.load(h)
 
 
 #Extracting url data from previously stored tweets
+print("Extracting URLs from the previously stored tweets.")
 tweets_id=active.get_tweet_id(stored_tweets)
 url_list, username_list,user_profile_list=active.get_url_data(stored_tweets)
 
 #Pulling new tweets and extending them with the stored tweets
+print("Pulling new tweets.")
 searched_tweets=active.pull_tweets(query)
 stored_tweets.extend(searched_tweets)
 active.write_data(stored_tweets,tweets_file)
 
 
 #Extracting url data from new stored tweets
+print("Extracting URLs from the new tweets.")
 url_list1, username_list1,user_profile_list1=active.get_url_data(searched_tweets)
 user_profile_list.extend(user_profile_list1)
 
@@ -59,6 +62,7 @@ for i in user_profile_list:
         urls.extend(i)
         
 #Storing unique profile URLs in a file
+print("Storing the profile URLs in a csv file")
 urls1=set(urls)
 urls_final=list(urls1)
 d={'Profile':pd.Series(urls_final)}
@@ -66,6 +70,7 @@ finaldata=pd.DataFrame(d)
 finaldata.to_csv(profile_file,index=False,encoding='UTF-8')
 
 #Ensuring that only unique posts urls are stored
+print("Storing the post URLs in a csv file")
 url_list.extend(url_list1)
 url_set=set(url_list)
 url_list_final=list(url_set)
@@ -78,7 +83,9 @@ counter=collections.Counter(urls_final)
 
 
 #Analysis of negative tweets
+print("Performing sentiment analysis on tweets.")
 neg=active.analytics(searched_tweets)
+print("Generating wordcloud of negative tweets. ")
 word=active.wordcloud(neg)
 
 

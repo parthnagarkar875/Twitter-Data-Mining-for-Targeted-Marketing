@@ -141,7 +141,7 @@ def pull_tweets(query):
 
     return searched_tweets
 
-#analytics
+#Sentiments of the tweets are predicted to classify them as negative, psoitive or neutral. 
 def analytics(stored_tweets):
     neut=0
     pos=0
@@ -162,7 +162,7 @@ def analytics(stored_tweets):
     negp=(neg/len(stored_tweets))*100
     neutp=(neut/len(stored_tweets))*100
     posp=(pos/len(stored_tweets))*100
-
+#Plotting of pie chart to give information related to the negative, postiive and neutral tweets
     labels = 'Positive',"Negative","Neutral"
     sizes = [posp,negp,neutp]
     m=max(posp,negp,neutp)

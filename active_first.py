@@ -33,8 +33,11 @@ tweets_file=query+'/tweets.pickle'
 active.create_project_directory(query)
 
 #Pulling and storing tweets
+print("Pulling tweets")
 searched_tweets=active.pull_tweets(query)
+print("Writing tweets to a file")
 active.write_data(searched_tweets,tweets_file)
+print("Extracting URLs")
 url_list1, username_list1,user_profile_list1=active.get_url_data(searched_tweets)
 user_profile_list.extend(user_profile_list1)
 
@@ -44,11 +47,13 @@ counter=collections.Counter(username_list1)
 #Storing the unique profile urls
 set1=set(user_profile_list)
 user_profile_final=list(set1)
+print("Writing the profile URLs to a csv file.")
 d={'Profile':pd.Series(user_profile_final)}
 finaldata=pd.DataFrame(d)
 finaldata.to_csv(profile_file,index=False,encoding='UTF-8')
 
 #Storing the unique status urls
+print("Writing the status URLs to a csv file.")
 url_set=set(url_list1)
 url_list_final=list(url_set)
 df={'Posts URL':pd.Series(url_list_final)}
@@ -57,6 +62,8 @@ finaldata.to_csv(status_file,index=False,encoding='UTF-8')
 
 
 #Analysis of negative tweets
+print("Performing sentiment analysis on the tweets.")
 neg=active.analytics(searched_tweets)
+print("Generating a wordcloud of negative tweets.")
 word=active.wordcloud(neg)
 
