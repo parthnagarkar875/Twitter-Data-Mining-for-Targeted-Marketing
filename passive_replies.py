@@ -49,12 +49,21 @@ print("Extracting URLs from the previously stored tweets.")
 tweets_id=active.get_tweet_id(tweets)
 tweet_id=set(tweets_id)
 
-unique_tweets=list()
-for i in tweet_id:
-    tweet = api.get_status(i)
-    unique_tweets.append(tweet)
+print("Getting unique tweets.")
+def unique(tweet_id):
+    unique_tweets=list()
+    for i in tweet_id:
+        tweet = api.get_status(i)
+        unique_tweets.append(tweet)
 
 
+with concurrent.futures.ThreadPoolExecutor(8) as executor:
+    future = executor.submit(unique, tweet_id)
+    return_value1 = future.result()
+
+
+
+print("Getting replies.")
 def replies(tweets):
     li=list()
     url1='https://twitter.com/'
