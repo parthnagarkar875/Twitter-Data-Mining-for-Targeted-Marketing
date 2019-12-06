@@ -82,7 +82,7 @@ def replies(tweets):
                         url2+=i.user.screen_name
                         li.append(url2)                
                         print(url2)
-                    print("\n")           
+                        print("\n")           
     except Exception as e:
         print(e)
     return li
