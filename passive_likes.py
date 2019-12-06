@@ -65,9 +65,12 @@ def get_uname(tweets):
     for i in tweets: 
         if i.id not in set1:
             if 'hiranandani' not in (i.user.screen_name).lower():
-                id1=get_user_ids_of_post_likes(i.id)
-                likers.extend(id1)        
-                set1.add(i.id)
+                try:
+                    id1=get_user_ids_of_post_likes(i.id)
+                    likers.extend(id1)        
+                    set1.add(i.id)
+                except:
+                    continue
     set2=set()
     likers_uname=list()
     for i in likers:   

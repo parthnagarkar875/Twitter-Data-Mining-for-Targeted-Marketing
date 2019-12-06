@@ -54,8 +54,11 @@ print("Getting unique tweets.")
 def unique(tweet_id):
     unique_tweets=list()
     for i in tweet_id:
-        tweet = api.get_status(i)
-        unique_tweets.append(tweet)
+        try:
+            tweet = api.get_status(i)
+            unique_tweets.append(tweet)
+        except:
+            continue
     return unique_tweets
 
 with concurrent.futures.ThreadPoolExecutor(8) as executor:
@@ -78,9 +81,8 @@ def replies(tweets):
                 url3+=j.user.screen_name+'/status/'+str(j.id) 
                 for i in reply:
                     if i.in_reply_to_status_id==j.id:
-                        url2=url1
                         li.append(i.user.screen_name)                
-                        print(url2)
+                        print(i.user.screen_name)
                         print("\n")           
     except Exception as e:
         print(e)
