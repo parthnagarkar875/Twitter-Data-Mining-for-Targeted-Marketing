@@ -55,11 +55,11 @@ def unique(tweet_id):
     for i in tweet_id:
         tweet = api.get_status(i)
         unique_tweets.append(tweet)
-
+    return unique_tweets
 
 with concurrent.futures.ThreadPoolExecutor(8) as executor:
     future = executor.submit(unique, tweet_id)
-    return_value1 = future.result()
+    unique_value = future.result()
 
 
 
@@ -89,7 +89,7 @@ def replies(tweets):
 
 
 with concurrent.futures.ThreadPoolExecutor(8) as executor:
-    future = executor.submit(replies, unique_tweets)
+    future = executor.submit(replies, unique_value)
     return_value1 = future.result()
 
 #like=set(return_value)
