@@ -5,7 +5,13 @@ Created on Tue Dec  3 16:23:34 2019
 @author: Parth
 """
 
+from time import sleep
 
+for i in range(20,40):
+    print(i)
+    sleep(1)
+
+'''
 import sys
 import json
 import time
@@ -61,3 +67,4 @@ if __name__ == "__main__":
     for tweet in get_tweets(tweets_file):
         for reply in get_replies(tweet):
             print(reply.AsJsonString())
+'''

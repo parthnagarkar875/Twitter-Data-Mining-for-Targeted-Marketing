@@ -28,13 +28,6 @@ auth.set_access_token(access_token, access_token_secret)
 
 api = tweepy.API(auth,wait_on_rate_limit=True)
 
-'''
-for i in reply:
-    print(i.in_reply_to_status_id)
-    url2=url1
-    url2+=i.user.screen_name+'/status/'+str(i.id)
-    print(url2)
-'''
 
 #creating a separate folder for  each tweet
 query='Hiranandani'
@@ -90,36 +83,14 @@ with concurrent.futures.ThreadPoolExecutor(8) as executor:
     future = executor.submit(get_uname, tweets)
     return_value = future.result()
 
-like=set(return_value)
-print(len(like))
+#like=set(return_value)
+#print(len(like))
 
 
 print("--- %s seconds ---" % (time.time() - start_time))
 
 
 
-li=list()
-
-print("Obtained Likers' list. Getting replies list.")
-url1='https://twitter.com/'
-try: 
-    for j in tweets:
-        if 'hirandandani' not in (j.user.screen_name).lower():
-            reply=api.search(q=j.user.screen_name,since_id=j.id,count=10000)
-            print("For User: ",j.user.screen_name)
-            url3=url1
-            url3+=j.user.screen_name+'/status/'+str(j.id) 
-            for i in reply:
-                if i.in_reply_to_status_id==j.id:
-                    url2=url1
-                    url2+=i.user.screen_name+'/status/'+str(i.id)
-                    
-                    li.append(url2)                
-                    print(url2)
-                print("\n\n")
-                
-except Exception as e:
-    print(e)
 
 
 
