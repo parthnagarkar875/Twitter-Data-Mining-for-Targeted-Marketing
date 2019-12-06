@@ -75,7 +75,7 @@ def get_uname(tweets):
             u=api.get_user(i)
             likers_uname.append(u.screen_name)            
             set2.add(i)
-
+            print(u.screen_name)
 
 
     return likers_uname
