@@ -79,8 +79,7 @@ def replies(tweets):
                 for i in reply:
                     if i.in_reply_to_status_id==j.id:
                         url2=url1
-                        url2+=i.user.screen_name
-                        li.append(url2)                
+                        li.append(i.user.screen_name)                
                         print(url2)
                         print("\n")           
     except Exception as e:
@@ -96,6 +95,8 @@ with concurrent.futures.ThreadPoolExecutor(8) as executor:
 
 print("--- %s seconds ---" % (time.time() - start_time))
 
+
+        
 my_file = Path(passive_file)
 if my_file.is_file():
     df=pd.read_csv(passive_file)
