@@ -45,7 +45,14 @@ except:
 
 tweets=pickle.load(h)
 
+print("Extracting URLs from the previously stored tweets.")
+tweets_id=active.get_tweet_id(tweets)
+tweet_id=set(tweets_id)
 
+unique_tweets=list()
+for i in tweet_id:
+    tweet = api.get_status(i)
+    unique_tweets.append(tweet)
 
 
 def replies(tweets):
@@ -73,13 +80,11 @@ def replies(tweets):
 
 
 with concurrent.futures.ThreadPoolExecutor(8) as executor:
-    future = executor.submit(replies, tweets)
+    future = executor.submit(replies, unique_tweets)
     return_value1 = future.result()
 
 #like=set(return_value)
 #print(len(like))
-
-
 
 print("--- %s seconds ---" % (time.time() - start_time))
 
@@ -98,12 +103,3 @@ else:
     df={'list':pd.Series(return_value1)}
     finaldata=pd.DataFrame(df)
     finaldata.to_csv(passive_file,index=False,encoding='UTF-8')
-
-
-
-
-
-
-
-
-

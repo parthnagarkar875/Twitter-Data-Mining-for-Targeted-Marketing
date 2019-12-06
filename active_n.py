@@ -51,7 +51,6 @@ url_list1, username_list1,user_profile_list1=active.get_url_data(searched_tweets
 user_profile_list.extend(user_profile_list1)
 
 
-
 #Reading the file containing previously stored profile URLs
 df=pd.read_csv(profile_file)
 urls=list(df['Profile'])
