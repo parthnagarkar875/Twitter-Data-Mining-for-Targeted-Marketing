@@ -180,9 +180,8 @@ def analytics(stored_tweets):
     plt.show()
 
     return negative
+
 #wordcloud
-
-
 def wordcloud(negative):
     hello=[]
     stop_words = set(stopwords.words('english')) 
@@ -230,82 +229,6 @@ def wordcloud(negative):
 
 
 
-#tweets_id=list()
-
-
-
-
-#tweet=get_tweets('Hiranandani',100000)
-
-
-
-'''
-# assuming twitter_authentication.py contains each of the 4 oauth elements (1 per line)
-#from twitter_authentication import API_KEY, API_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET
-
-auth = tweepy.OAuthHandler('rNrnFupaEqKt0eb7hjbdHKdWg', 'DTTMoQOrCBmngaXmOnFhrBjdjwtT54x0AbGvNwwuqyYNWwEvc7')
-auth.set_access_token('1002268050513575936-gGrQUmDiMyCxO2Y88lc3ojqNzbtLGm', 'G572YTe2S5TQTTaXhFvl1WyNopa8ilrkgWSlCXBZQwU4C')
-
-api = tweepy.API(auth)
-
-query = 'hiranandani'
-max_tweets = 100000
-searched_tweets = [status for status in tweepy.Cursor(api.search, q=query).items(max_tweets)]
-
-'''
-
-
-'''
-#retweeters
-replies=[] 
-non_bmp_map = dict.fromkeys(range(0x10000, sys.maxunicode + 1), 0xfffd)  
-for full_tweets in tweepy.Cursor(api.user_timeline,screen_name='brfootball',timeout=999999).items(10):
-  for tweet in tweepy.Cursor(api.search,q='to:'+'brfootball',result_type='recent',timeout=999999).items(1000):
-    if hasattr(tweet, 'in_reply_to_status_id_str'):
-      if (tweet.in_reply_to_status_id_str==full_tweets.id_str):
-        replies.append(tweet.text)
-  print("Tweet :",full_tweets.text.translate(non_bmp_map))
-  for elements in replies:
-       print("Replies :",elements)
-  replies.clear()
-
-
-igsjc_tweets_jan = [tweet for tweet in tweepy.Cursor(
-                    api.search, q="Hiranandani", since='2019-08-01', until='2019-09-30').items(3000)]
-
-
-    
-igsjc_tweets_jan = [tweet for tweet in tweepy.Cursor(api.search,
-                           q="Hiranandani",
-                           count=1000,
-                           result_type="recent",
-                           include_entities=True,
-                           lang="en").items()]
-
-igsjc_tweets_jan = api.search('Hiranandani',count=1000)
-'''
-
-
-
-'''
-url_list1, username_list1,user_profile_list1=get_url_data(searched_tweets)
-user_profile_list.append(user_profile_list1)
-
-counter=collections.Counter(username_list)
-
-df=pd.read_csv('Profiles.csv')
-urls=list(df['Profile'])
-
-for i in user_profile_list:
-    if i not in urls:
-        urls.extend(i)
-
-
-d={'Profile':pd.Series(urls)}
-
-finaldata=pd.DataFrame(d)
-finaldata.to_csv("Profiles.csv",index=False,encoding='UTF-8')
-'''
 
 
 

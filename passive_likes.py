@@ -16,6 +16,8 @@ import pickle
 import os
 from math import ceil
 import active
+from pathlib import Path
+import pandas as pd
 import concurrent.futures 
 import tweepy
 start_time = time.time()
@@ -34,6 +36,7 @@ query='Hiranandani'
 profile_file=query+'/Profiles.csv'
 status_file=query+'/status.csv'
 tweets_file=query+'/tweets.pickle'
+passive_file=query+'/passive.csv'
 
 #Opening the file containing previously stored tweets
 try:
@@ -90,8 +93,20 @@ with concurrent.futures.ThreadPoolExecutor(8) as executor:
 print("--- %s seconds ---" % (time.time() - start_time))
 
 
-
-
-
+my_file = Path(passive_file)
+if my_file.is_file():
+    df=pd.read_csv(passive_file)
+    urls2=df['list']
+    urls3=list(urls2)
+    urls3.extend(return_value)
+    set1=set(urls3)
+    user_likes=list(set1)
+    df={'list':pd.Series(user_likes)}
+    finaldata=pd.DataFrame(df)
+    finaldata.to_csv(passive_file,index=False,encoding='UTF-8')
+else:
+    df={'list':pd.Series(return_value)}
+    finaldata=pd.DataFrame(df)
+    finaldata.to_csv(passive_file,index=False,encoding='UTF-8')
 
 

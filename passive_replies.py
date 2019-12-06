@@ -13,6 +13,8 @@ import re
 import sys
 from time import sleep
 import pickle
+import pandas as pd
+from pathlib import Path
 import os
 from math import ceil
 import active
@@ -34,7 +36,7 @@ query='Hiranandani'
 profile_file=query+'/Profiles.csv'
 status_file=query+'/status.csv'
 tweets_file=query+'/tweets.pickle'
-
+passive_file=query+'/passive.csv'
 #Opening the file containing previously stored tweets
 try:
     h=open(tweets_file,'rb')
@@ -72,7 +74,7 @@ def replies(tweets):
 
 with concurrent.futures.ThreadPoolExecutor(8) as executor:
     future = executor.submit(replies, tweets)
-    return_value = future.result()
+    return_value1 = future.result()
 
 #like=set(return_value)
 #print(len(like))
@@ -81,22 +83,21 @@ with concurrent.futures.ThreadPoolExecutor(8) as executor:
 
 print("--- %s seconds ---" % (time.time() - start_time))
 
-df=pd.read_csv(profile_file)
-urls=list(df['Profile'])
-
-#Only extend/add new profile URL if they are already not present
-for i in user_profile_list:
-    if i not in urls:
-        urls.extend(i)
-
-
-urls1=set(urls)
-urls_final=list(urls1)
-d={'Profile':pd.Series(urls_final)}
-finaldata=pd.DataFrame(d)
-finaldata.to_csv(profile_file,index=False,encoding='UTF-8')
-
-
+my_file = Path(passive_file)
+if my_file.is_file():
+    df=pd.read_csv(passive_file)
+    urls2=df['list']
+    urls3=list(urls2)
+    urls3.extend(return_value1)
+    set1=set(urls3)
+    user_likes=list(set1)
+    df={'list':pd.Series(user_likes)}
+    finaldata=pd.DataFrame(df)
+    finaldata.to_csv(passive_file,index=False,encoding='UTF-8')
+else:
+    df={'list':pd.Series(return_value1)}
+    finaldata=pd.DataFrame(df)
+    finaldata.to_csv(passive_file,index=False,encoding='UTF-8')
 
 
 
