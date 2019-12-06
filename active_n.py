@@ -19,7 +19,7 @@ import tweepy
 import active
 
 #creating a separate folder for  each tweet
-query='Hiranandani'
+query='HumanRights'
 profile_file=query+'/Profiles.csv'
 status_file=query+'/status.csv'
 tweets_file=query+'/tweets.pickle'
