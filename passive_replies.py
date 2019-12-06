@@ -45,6 +45,7 @@ except:
 
 tweets=pickle.load(h)
 
+
 print("Extracting URLs from the previously stored tweets.")
 tweets_id=active.get_tweet_id(tweets)
 tweet_id=set(tweets_id)
@@ -69,7 +70,7 @@ def replies(tweets):
     url1='https://twitter.com/'
     try: 
         for j in tweets:
-            if 'hirandandani' not in (j.user.screen_name).lower():
+            if 'hiranandani' not in (j.user.screen_name).lower():
                 reply=api.search(q=j.user.screen_name,since_id=j.id,count=10000)
                 print("For User: ",j.user.screen_name)
                 url3=url1
