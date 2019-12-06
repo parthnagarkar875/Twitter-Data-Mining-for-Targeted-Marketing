@@ -4,6 +4,8 @@ Created on Tue Dec  3 14:15:51 2019
 
 @author: Parth
 """
+import time
+import threading
 import urllib
 import re
 import io
@@ -14,7 +16,9 @@ import pickle
 import os
 from math import ceil
 import active
+import concurrent.futures 
 import tweepy
+start_time = time.time()
 consumer_key='rNrnFupaEqKt0eb7hjbdHKdWg'
 consumer_secret= 'DTTMoQOrCBmngaXmOnFhrBjdjwtT54x0AbGvNwwuqyYNWwEvc7'
 access_token='1002268050513575936-gGrQUmDiMyCxO2Y88lc3ojqNzbtLGm'
@@ -22,9 +26,7 @@ access_token_secret='G572YTe2S5TQTTaXhFvl1WyNopa8ilrkgWSlCXBZQwU4C'
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 
-api = tweepy.API(auth)
-
-
+api = tweepy.API(auth,wait_on_rate_limit=True)
 
 '''
 for i in reply:
@@ -62,17 +64,48 @@ def get_user_ids_of_post_likes(post_id):
     except urllib.request.HTTPError:
         return False
 
-likers=list()
-for i in tweets: 
-    if 'hiranandani'not in (i.user.screen_name).lower():
-        id1=get_user_ids_of_post_likes(i.id)
-        likers.extend(id1)
+def get_uname(tweets):
+    set1=set()
+    likers=list()
+    for i in tweets: 
+        if i.id not in set1:
+            if 'hiranandani' not in (i.user.screen_name).lower():
+                id1=get_user_ids_of_post_likes(i.id)
+                likers.extend(id1)        
+                set1.add(i.id)
+    return likers
+'''
+    set2=set()
+    likers_uname=list()
+    for i in likers:   
+        if i not in set2:
+            u=api.get_user(i)
+            likers_uname.append(u.screen_name)            
+            set2.add(i)
 
+    return likers_uname
+'''
+
+
+
+with concurrent.futures.ThreadPoolExecutor(8) as executor:
+    future = executor.submit(get_uname, tweets)
+    return_value = future.result()
+
+like=set(return_value)
+print(len(like))
+
+
+print("--- %s seconds ---" % (time.time() - start_time))
+
+
+
+'''
 print("Obtained Likers' list. Getting replies list.")
 url1='https://twitter.com/'
 try: 
     for j in tweets:
-        sleep(3)
+        sleep(7)
         reply=api.search(q=j.user.screen_name,since_id=j.id,count=10000)
         print("For User: ",j.user.screen_name)
         url3=url1
@@ -89,3 +122,8 @@ try:
         status_and_replies[url3]=li
 except Exception as e:
     print(e)
+
+'''
+
+
+
