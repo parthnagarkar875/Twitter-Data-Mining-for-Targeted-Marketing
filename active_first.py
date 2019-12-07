@@ -44,6 +44,12 @@ user_profile_list.extend(user_profile_list1)
 #Getting the frequency of Users
 counter=collections.Counter(username_list1)
 
+locations=dict()
+
+for i in searched_tweets:
+    locations[i.user.screen_name]=i.user.location
+
+
 #Storing the unique profile urls
 set1=set(user_profile_list)
 user_profile_final=list(set1)
