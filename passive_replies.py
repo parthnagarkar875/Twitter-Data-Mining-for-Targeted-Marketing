@@ -97,7 +97,7 @@ with concurrent.futures.ThreadPoolExecutor(8) as executor:
 print("--- %s seconds ---" % (time.time() - start_time))
 
 
-        
+
 my_file = Path(passive_file)
 if my_file.is_file():
     df=pd.read_csv(passive_file)
