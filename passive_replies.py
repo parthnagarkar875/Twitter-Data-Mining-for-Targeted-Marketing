@@ -32,7 +32,7 @@ api = tweepy.API(auth,wait_on_rate_limit=True)
 
 
 #creating a separate folder for  each tweet
-query='Hiranandani'
+query='YogiAdityanath'
 profile_file=query+'/Profiles.csv'
 status_file=query+'/status.csv'
 tweets_file=query+'/tweets.pickle'
@@ -44,7 +44,6 @@ except:
     print("Run the initial code first.")
 
 tweets=pickle.load(h)
-
 
 print("Extracting URLs from the previously stored tweets.")
 tweets_id=active.get_tweet_id(tweets)
