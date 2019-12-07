@@ -28,10 +28,6 @@ except:
 
 tweets=pickle.load(h)
 
-locations=dict()
-
-for i in tweets:
-    locations[i.user.screen_name]=i.user.location
 
 
 

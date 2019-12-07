@@ -4,7 +4,7 @@ Created on Wed Dec  4 17:31:29 2019
 
 @author: Parth
 """
-
+import csv
 import collections
 from collections import Counter
 import pickle 
@@ -23,7 +23,7 @@ query='Hiranandani'
 profile_file=query+'/Profiles.csv'
 status_file=query+'/status.csv'
 tweets_file=query+'/tweets.pickle'
-
+locations_file=query+'/location.csv'
 #Opening the file containing previously stored tweets
 try:
     h=open(tweets_file,'rb')
@@ -60,6 +60,21 @@ for i in user_profile_list:
     if i not in urls:
         urls.extend(i)
         
+        
+locations=dict()
+
+for i in stored_tweets:
+    locations[i.user.screen_name]=i.user.location
+    
+with open(locations_file, 'w') as csv_file:  
+    writer = csv.writer(csv_file)
+    for key, value in locations.items():
+       writer.writerow([key, value])
+
+
+
+
+
 #Storing unique profile URLs in a file
 print("Storing the profile URLs in a csv file")
 urls1=set(urls)
@@ -87,9 +102,3 @@ neg=active.analytics(searched_tweets)
 print("Generating wordcloud of negative tweets. ")
 word=active.wordcloud(neg)
 
-
-
-with open('dict.csv', 'w', newline="") as csv_file:  
-    writer = csv.writer(csv_file)
-    for key, value in mydict.items():
-       writer.writerow([key, value])
