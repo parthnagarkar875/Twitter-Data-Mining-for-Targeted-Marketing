@@ -11,6 +11,7 @@ import mysql.connector
 import datetime
 import pandas as pd
 import settings
+import plotly.express as px
 
 consumer_key='rNrnFupaEqKt0eb7hjbdHKdWg'
 consumer_secret= 'DTTMoQOrCBmngaXmOnFhrBjdjwtT54x0AbGvNwwuqyYNWwEvc7'
@@ -47,7 +48,8 @@ result = result.rename(columns={ "id_str": "Num of '{}' mentions".format(setting
 time_series = result["Time in UTC"][result['polarity']==0].reset_index(drop=True)
 
 
-
+fig = px.line(result, x='Time in UTC',y="Num of '{}' mentions".format(settings.TRACK_WORD),color='polarity')
+fig.show()
 
 
 
