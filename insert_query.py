@@ -101,7 +101,7 @@ mydb = mysql.connector.connect(
     host="localhost",
     user="root",
     passwd="parth123n@#*",
-    database="twitterdb",
+    database="instagramdb",
     charset = 'utf8'
 )
 if mydb.is_connected():
