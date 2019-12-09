@@ -93,7 +93,7 @@ class MyStreamListener(tweepy.StreamListener):
         if status_code == 420:
             # return False to disconnect the stream
             return False
-        
+
 
 
 
