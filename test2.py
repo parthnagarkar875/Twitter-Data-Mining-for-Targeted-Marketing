@@ -7,6 +7,8 @@ Created on Sat Dec  7 15:10:47 2019
 import active
 import tweepy
 import pickle
+import mysql.connector
+
 consumer_key='rNrnFupaEqKt0eb7hjbdHKdWg'
 consumer_secret= 'DTTMoQOrCBmngaXmOnFhrBjdjwtT54x0AbGvNwwuqyYNWwEvc7'
 access_token='1002268050513575936-gGrQUmDiMyCxO2Y88lc3ojqNzbtLGm'
@@ -16,27 +18,11 @@ auth.set_access_token(access_token, access_token_secret)
 
 api = tweepy.API(auth,wait_on_rate_limit=True)
 
-query='Hiranandani'
-tweets_file=query+'/tweets.pickle'
-passive_file=query+'/passive.csv'
 
-#Opening the file containing previously stored tweets
-try:
-    h=open(tweets_file,'rb')
-except:
-    print("Run the initial code first.")
+mydb = mysql.connector.connect(
+  host="localhost",
+  user="root",
+  passwd="parth123n@#*"
+)
 
-tweets=pickle.load(h)
-
-locations=dict()
-
-for i in tweets:
-    locations[i.user.screen_name]=i.user.location
-
-
-
-
-
-
-
-
+print(mydb) 

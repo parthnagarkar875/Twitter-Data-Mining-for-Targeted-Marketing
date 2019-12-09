@@ -70,6 +70,12 @@ for i in stored_tweets:
 print("Storing the profile URLs in a csv file")
 urls1=set(urls)
 urls_final=list(urls1)
+for i in urls_final:
+    if 'http' not in i:
+        urls_final.remove(i)
+    
+    
+    
 d={'Profile':pd.Series(urls_final)}
 finaldata=pd.DataFrame(d)
 finaldata.to_csv(profile_file,index=False,encoding='UTF-8')
@@ -90,6 +96,8 @@ counter=collections.Counter(urls_final)
 #Analysis of negative tweets
 print("Performing sentiment analysis on tweets.")
 neg=active.analytics(searched_tweets)
+
+
 print("Generating wordcloud of negative tweets. ")
 word=active.wordcloud(neg)
 
