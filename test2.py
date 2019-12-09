@@ -6,6 +6,7 @@ Created on Sat Dec  7 15:10:47 2019
 """
 import active
 import tweepy
+from time import sleep
 import pickle
 import mysql.connector
 import datetime
@@ -30,26 +31,21 @@ db_connection = mysql.connector.connect(
     database="instagramdb",
     charset = 'utf8'
  )
-'''
-time_now = datetime.datetime.utcnow()
-time_10mins_before = datetime.timedelta(hours=0,minutes=10).strftime('%Y-%m-%d %H:%M:%S')
-time_interval = time_now - time_10mins_before
-'''
 
-query = "SELECT id_str, text, created_at, polarity,user_location FROM {}".format(settings.TABLE_NAME)
+
+timenow = (datetime.datetime.utcnow() - datetime.timedelta(hours=0, minutes=30)).strftime('%Y-%m-%d %H:%M:%S')
+query = "SELECT id_str, text, created_at, polarity, user_location FROM {} WHERE created_at >= '{}' " \
+                 .format(settings.TABLE_NAME, timenow)
 df = pd.read_sql(query, con=db_connection)
-
+# UTC for date time at default
 df['created_at'] = pd.to_datetime(df['created_at'])
 
+# Clean and transform data to enable time series
 result = df.groupby([pd.Grouper(key='created_at', freq='2s'), 'polarity']).count().unstack(fill_value=0).stack().reset_index()
+#result['created_at'] = pd.to_datetime(result['created_at']).apply(lambda x: x.strftime('%m-%d %H:%M'))
+#result = df
+result = result.rename(columns={"id_str": "Num of '{}' mentions".format(settings.TRACK_WORDS[0]), "created_at":"Time in UTC"})
 
-result = result.rename(columns={ "id_str": "Num of '{}' mentions".format(settings.TRACK_WORD),"created_at":"Time in UTC" })
-
-time_series = result["Time in UTC"][result['polarity']==0].reset_index(drop=True)
-
-
-fig = px.line(result, x='Time in UTC',y="Num of '{}' mentions".format(settings.TRACK_WORD),color='polarity')
+fig = px.line(result, x='Time in UTC', y="Num of '{}' mentions".format(settings.TRACK_WORDS[0]), color='polarity')
 fig.show()
-
-
-
+time.sleep(60)
