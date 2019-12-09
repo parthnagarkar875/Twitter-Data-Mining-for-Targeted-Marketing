@@ -101,7 +101,7 @@ mydb = mysql.connector.connect(
     host="localhost",
     user="root",
     passwd="parth123n@#*",
-    database="TwitterDB",
+    database="twitterdb",
     charset = 'utf8'
 )
 if mydb.is_connected():
@@ -125,6 +125,8 @@ myStream = tweepy.Stream(auth = api.auth, listener = myStreamListener)
 myStream.filter(languages=["en"], track = settings.TRACK_WORDS)
 
 mydb.close()
+
+
 
 
 
