@@ -22,7 +22,7 @@ auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth,wait_on_rate_limit=True)
 
 
-def clean_tweet(self, tweet): 
+def clean_tweet(tweet): 
     ''' 
     Use sumple regex statemnents to clean tweet text by removing links and special characters
     '''
@@ -47,7 +47,8 @@ class MyStreamListener(tweepy.StreamListener):
 
         id_str = status.id_str
         created_at = status.created_at
-        text = deEmojify(status.text)     
+        text1 = deEmojify(status.text)     
+        text=clean_tweet(text1)
         sentiment = TextBlob(text).sentiment
         polarity = sentiment.polarity
         subjectivity = sentiment.subjectivity

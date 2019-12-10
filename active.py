@@ -6,14 +6,16 @@ Created on Mon Dec  2 12:25:37 2019
 """
 import os
 import collections
+import re
+from nltk.probability import FreqDist
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
 from collections import Counter
 import pickle 
 import string
 import pandas as pd
 from textblob import TextBlob
 import matplotlib.pyplot as plt
-from nltk.corpus import stopwords 
-from nltk.tokenize import word_tokenize 
 from math import ceil
 import tweepy
 
@@ -40,6 +42,20 @@ def write_data(stored_tweets,filename):
     pickle.dump(stored_tweets,tweet_pickle)
     tweet_pickle.close()
 
+def clean_tweet(tweet): 
+    ''' 
+    Use sumple regex statemnents to clean tweet text by removing links and special characters
+    '''
+    return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t]) \
+                                |(\w+:\/\/\S+)", " ", tweet).split()) 
+def deEmojify(text):
+    '''
+    Strip all non-ASCII characters to remove emoji characters
+    '''
+    if text:
+        return text.encode('ascii', 'ignore').decode('ascii')
+    else:
+        return None
 
 def get_tweet_id(tweets):
     tweet_ids=[]
@@ -151,7 +167,9 @@ def analytics(stored_tweets):
 
     
     for i in stored_tweets:
-        blob=TextBlob(str(i.text))
+        text1 = deEmojify(str(i.text))     
+        text=clean_tweet(text1)
+        blob=TextBlob(text)
         if blob.polarity<0:
             neg+=1
             negative.append(i)
@@ -183,12 +201,14 @@ def analytics(stored_tweets):
 
 #wordcloud
 def wordcloud(negative):
-    hello=[]
+   # hello=[]
     stop_words = set(stopwords.words('english')) 
     text_tweets=list()
     for i in negative:
         if 'hiranandani' not in (i.user.screen_name).lower():
             st=i.text    
+            text_tweets.append(st)
+            '''
             word_tokens = word_tokenize(st)
             filtered_sentence = []   
             removetable = str.maketrans('', '', '@#%')
@@ -199,7 +219,6 @@ def wordcloud(negative):
             x = [''.join(c for c in s if c not in string.punctuation) for s in filtered_sentence]
             x = [s for s in x if s]
             text_tweets.append(x)
-    
     for i in text_tweets:
         if 'RT' in i:
             i.remove('RT')
@@ -209,7 +228,30 @@ def wordcloud(negative):
     for j in text_tweets:
         l3 = [x for x in j if x not in username_set]
         hello.append(l3)    
-            
+    '''
+    finaldata={'text':pd.Series(text_tweets)}
+    df=pd.DataFrame(finaldata)
+
+    
+    content = ' '.join(df['text'])
+    content = re.sub(r"http\S+", "", content)
+    content = content.replace('RT ', ' ').replace('&amp;', 'and')
+    content = re.sub('[^A-Za-z0-9]+', ' ', content)
+    content = content.lower()
+
+    tokenized_word = word_tokenize(content)
+    stop_words=set(stopwords.words("english"))
+    filtered_sent=[]
+    for w in tokenized_word:
+        if w not in stop_words:
+            filtered_sent.append(w)
+    fdist = FreqDist(filtered_sent)
+    fd = pd.DataFrame(fdist.most_common(20), columns = ["Word","Frequency"]).drop([0]).reindex()
+    
+    return fd
+    
+    
+    '''
     flat_tweets=list(flatten(hello))
     
     for i in flat_tweets:
@@ -224,7 +266,7 @@ def wordcloud(negative):
             
     c1=counter.most_common()
     return c1
-
+    '''
 
 
 

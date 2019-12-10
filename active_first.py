@@ -73,3 +73,11 @@ neg=active.analytics(searched_tweets)
 print("Generating a wordcloud of negative tweets.")
 word=active.wordcloud(neg)
 
+x=word['Word']
+y=word['Frequency']
+index=np.arange(len(x))
+plt.bar(index,y)
+plt.xlabel('Words',fontsize=10)
+plt.ylabel('Frequency',fontsize=10)
+plt.xticks(index,x,fontsize=7,rotation=30)
+plt.show()

@@ -17,7 +17,7 @@ from nltk.tokenize import word_tokenize
 from math import ceil
 import tweepy
 import active
-
+import numpy as np
 #creating a separate folder for  each tweet
 query='Hiranandani'
 profile_file=query+'/Profiles.csv'
@@ -101,6 +101,14 @@ neg=active.analytics(searched_tweets)
 print("Generating wordcloud of negative tweets. ")
 word=active.wordcloud(neg)
 
+x=word['Word']
+y=word['Frequency']
+index=np.arange(len(x))
+plt.bar(index,y)
+plt.xlabel('Words',fontsize=10)
+plt.ylabel('Frequency',fontsize=10)
+plt.xticks(index,x,fontsize=7,rotation=30)
+plt.show()
 
 
 
