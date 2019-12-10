@@ -9,6 +9,7 @@ import collections
 from collections import Counter
 import pickle 
 import string
+import numpy as np
 import pandas as pd
 from textblob import TextBlob
 import matplotlib.pyplot as plt
