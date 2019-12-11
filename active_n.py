@@ -19,7 +19,7 @@ import tweepy
 import active
 import numpy as np
 #creating a separate folder for  each tweet
-query='YogiAdityanath'
+query='Hiranandani'
 profile_file=query+'/Profiles.csv'
 status_file=query+'/status.csv'
 tweets_file=query+'/tweets.pickle'
@@ -107,7 +107,7 @@ index=np.arange(len(x))
 plt.bar(index,y)
 plt.xlabel('Words',fontsize=10)
 plt.ylabel('Frequency',fontsize=10)
-plt.xticks(index,x,fontsize=7,rotation=30)
+plt.xticks(index,x,fontsize=10,rotation=30)
 plt.show()
 
 

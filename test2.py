@@ -10,15 +10,12 @@ import pandas as pd
 import time
 import itertools
 import math
-
 import seaborn as sns
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-#%matplotlib inline
 import plotly.express as px
 import datetime
 from IPython.display import clear_output
-
 import plotly.offline as py
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
@@ -26,8 +23,6 @@ import tweepy
 import numpy as np
 import re
 import nltk
-# nltk.download('punkt')
-# nltk.download('stopwords')
 from nltk.probability import FreqDist
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords

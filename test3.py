@@ -153,7 +153,10 @@ for w in tokenized_word:
         filtered_sent.append(w)
 
 
-
+df=pd.read_csv('Hiranandani/passive.csv')
+for i in df['list']:
+    if 'hiranandani' in i:
+        print(i)
 
 
 
