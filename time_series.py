@@ -53,6 +53,20 @@ df = pd.read_sql(query, con=db_connection)
 
 #df['created_at'] = pd.to_datetime(df['created_at'])
 
+
+# Clean and transform data to enable time series
+result = df.groupby([pd.Grouper(key='created_at', freq='2s'), 'polarity']).count().unstack(fill_value=0).stack().reset_index()
+#result['created_at'] = pd.to_datetime(result['created_at']).apply(lambda x: x.strftime('%m-%d %H:%M'))
+#result = df
+result = result.rename(columns={"id_str": "Num of '{}' mentions".format(settings.TRACK_WORDS), "created_at":"Time in UTC"})
+fig = px.line(result, x='Time in UTC', y="Num of '{}' mentions".format(settings.TRACK_WORDS), color='polarity')
+fig.show()
+time.sleep(60)
+
+#fig = px.line(result, x='Time in UTC', y="Num of '{}' mentions".format(settings.TRACK_WORDS[0]), color='polarity')
+#fig.show()
+#time.sleep(60)
+
 df=df.set_index('created_at')
 
 sns.set(rc={'figure.figsize':(11, 4)})
