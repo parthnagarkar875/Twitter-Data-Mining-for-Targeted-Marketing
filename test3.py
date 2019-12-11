@@ -104,61 +104,23 @@ import tweepy
 import mysql.connector
 import pandas as pd
 from textblob import TextBlob
+import datetime
 
-consumer_key='rNrnFupaEqKt0eb7hjbdHKdWg'
-consumer_secret= 'DTTMoQOrCBmngaXmOnFhrBjdjwtT54x0AbGvNwwuqyYNWwEvc7'
-access_token='1002268050513575936-gGrQUmDiMyCxO2Y88lc3ojqNzbtLGm'
-access_token_secret='G572YTe2S5TQTTaXhFvl1WyNopa8ilrkgWSlCXBZQwU4C'
-auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-auth.set_access_token(access_token, access_token_secret)
-
-api = tweepy.API(auth,wait_on_rate_limit=True)
-
-tweets=api.search('Messi',lang='en',count=100)
-
-text_tweets=list()
-
-stop_words=set(stopwords.words("english"))
-for i in tweets:
-    st=i.text
-    word_tokens = word_tokenize(st)
-    filtered_sentence = []   
-    removetable = str.maketrans('', '', '@#%')
-    out_list = [s.translate(removetable) for s in word_tokens]
-    for w in out_list: 
-        if w not in stop_words: 
-            filtered_sentence.append(w) 
-    x = [''.join(c for c in s if c not in string.punctuation) for s in filtered_sentence]
-    x = [s for s in x if s]
-    text_tweets.append(x)    
+db_connection = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    passwd="parth123n@#*",
+    database="instagramdb",
+    charset = 'utf8'
+)
 
 
-li=list()
-for i in tweets:
-    li.append(i.text)
-finaldata={'text':pd.Series(li)}
-df=pd.DataFrame(finaldata)
+timenow = (datetime.datetime.utcnow() - datetime.timedelta(hours=0, minutes=30)).strftime('%Y-%m-%d %H:%M:%S')
+query = "SELECT id_str, text, created_at, polarity, user_location FROM {}" \
+                 .format(settings.TABLE_NAME)
+df = pd.read_sql(query, con=db_connection)
 
-content = ' '.join(df['text'])
-content = re.sub(r"http\S+", "", content)
-content = content.replace('RT ', ' ').replace('&amp;', 'and')
-content = re.sub('[^A-Za-z0-9]+', ' ', content)
-content = content.lower()
-
-tokenized_word = word_tokenize(content)
-
-filtered_sent=[]
-for w in tokenized_word:
-    if w not in stop_words:
-        filtered_sent.append(w)
-
-
-df=pd.read_csv('Hiranandani/passive.csv')
-for i in df['list']:
-    if 'hiranandani' in i:
-        print(i)
-
-
-
-
+for i in df['text'][:20]:
+    t=TextBlob(i).sentiment
+    print(t.polarity)
 

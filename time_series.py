@@ -50,18 +50,39 @@ query = "SELECT id_str, text, created_at, polarity, user_location FROM {}" \
                  .format(settings.TABLE_NAME)
 df = pd.read_sql(query, con=db_connection)
 # UTC for date time at default
-df['created_at'] = pd.to_datetime(df['created_at'])
 
+#df['created_at'] = pd.to_datetime(df['created_at'])
+
+df=df.set_index('created_at')
+
+sns.set(rc={'figure.figsize':(11, 4)})
+
+df['polarity'].plot(linewidth=0.7)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
 # Clean and transform data to enable time series
 result = df.groupby([pd.Grouper(key='created_at', freq='2s'), 'polarity']).count().unstack(fill_value=0).stack().reset_index()
 #result['created_at'] = pd.to_datetime(result['created_at']).apply(lambda x: x.strftime('%m-%d %H:%M'))
 #result = df
 result = result.rename(columns={"id_str": "Num of '{}' mentions".format(settings.TRACK_WORDS[0]), "created_at":"Time in UTC"})
-'''
-fig = px.line(result, x='Time in UTC', y="Num of '{}' mentions".format(settings.TRACK_WORDS[0]), color='polarity')
-fig.show()
-time.sleep(60)
-'''
+
+#fig = px.line(result, x='Time in UTC', y="Num of '{}' mentions".format(settings.TRACK_WORDS[0]), color='polarity')
+#fig.show()
+#time.sleep(60)
 
 content = ' '.join(df["text"])
 content = re.sub(r"http\S+", "", content)
@@ -87,24 +108,6 @@ plt.xlabel('Words',fontsize=5)
 plt.ylabel('Frequency',fontsize=5)
 plt.xticks(index,x,fontsize=5,rotation=30)
 plt.show()
-
-'''
-fig = make_subplots(
-        rows=2, cols=2,
-        column_widths=[1, 0.4],
-        row_heights=[0.6, 0.4],
-        specs=[[{"type": "scatter", "rowspan": 2}, {"type": "choropleth"}],
-               [            None                    , {"type": "bar"}]]
-        )
-
-
-# Plot Bar chart   
-fig.add_trace(go.Bar(x=fd["Word"], y=fd["Frequency"], name="Freq Dist"), row=2, col=2)
-# 59, 89, 152
-fig.update_traces(marker_color='rgb(59, 89, 152)', marker_line_color='rgb(8,48,107)', \
-        marker_line_width=0.5, opacity=0.7, row=2, col=2)
-
-fig.show()
 '''
 
 
