@@ -65,8 +65,8 @@ class MyStreamListener(tweepy.StreamListener):
                 
         retweet_count = status.retweet_count
         favorite_count = status.favorite_count     # Quick check contents in tweets
-        print(status.text)
-        print("Long: {}, Lati: {}".format(longitude, latitude))
+        #print(status.text)
+        #print("Long: {}, Lati: {}".format(longitude, latitude))
             
         # Store all data in MySQL
         if mydb.is_connected():
@@ -102,7 +102,7 @@ mydb = mysql.connector.connect(
     host="localhost",
     user="root",
     passwd="parth123n@#*",
-    database="instagramdb",
+    database="hiranandanidb",
     charset = 'utf8'
 )
 if mydb.is_connected():
