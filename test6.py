@@ -81,7 +81,7 @@ class MyStreamListener(tweepy.StreamListener):
                    subjectivity, user_created_at, user_location,\
                    user_description, user_followers_count, longitude,\
                    latitude, retweet_count, favorite_count) VALUES \
-                   (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)".format('hiranandani')
+                   (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)".format(TABLE_NAME)
             val = (id_str, created_at, text, polarity, subjectivity, user_created_at, user_location, \
                 user_description, user_followers_count, longitude, latitude, retweet_count, favorite_count)
             mycursor.execute(sql, val)
@@ -120,21 +120,102 @@ if mydb.is_connected():
         SELECT COUNT(*)
         FROM information_schema.tables
         WHERE table_name = '{0}'
-        """.format('hiranandani'))
+        """.format(TABLE_NAME))
     if mycursor.fetchone()[0] != 1:
-        mycursor.execute("CREATE TABLE {} ({})".format('hiranandani', TABLE_ATTRIBUTES))
+        mycursor.execute("CREATE TABLE {} ({})".format(TABLE_NAME, TABLE_ATTRIBUTES))
         mydb.commit()
     mycursor.close()
     
 try:
     myStreamListener = MyStreamListener()
     myStream = tweepy.Stream(auth = api.auth, listener = myStreamListener)
-    myStream.filter(languages=["en"], track = 'hiranandani')
+    myStream.filter(languages=["en"], track = TRACK_WORDS)
     
     mydb.close()
 except Exception as e:
     print(e)
 
 
+
+import pickle
+import mysql.connector
+import pandas as pd
+import time
+import itertools
+import math
+import seaborn as sns
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+import plotly.express as px
+import datetime
+from IPython.display import clear_output
+import plotly.offline as py
+import plotly.graph_objs as go
+from plotly.subplots import make_subplots
+import tweepy
+import numpy as np
+import re
+import nltk
+from nltk.probability import FreqDist
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from textblob import TextBlob
+consumer_key='rNrnFupaEqKt0eb7hjbdHKdWg'
+consumer_secret= 'DTTMoQOrCBmngaXmOnFhrBjdjwtT54x0AbGvNwwuqyYNWwEvc7'
+access_token='1002268050513575936-gGrQUmDiMyCxO2Y88lc3ojqNzbtLGm'
+access_token_secret='G572YTe2S5TQTTaXhFvl1WyNopa8ilrkgWSlCXBZQwU4C'
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_token, access_token_secret)
+
+api = tweepy.API(auth,wait_on_rate_limit=True)
+tweets_file='Hiranandani/tweets.pickle'
+
+
+def clean_tweet(tweet): 
+    ''' 
+    Use simple regex statemnents to clean tweet text by removing links and special characters
+    '''
+    return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t]) \
+                                |(\w+:\/\/\S+)", " ", tweet).split()) 
+def deEmojify(text):
+    '''
+    Strip all non-ASCII characters to remove emoji characters
+    '''
+    if text:
+        return text.encode('ascii', 'ignore').decode('ascii')
+    else:
+        return None
+
+
+try:
+    h=open(tweets_file,'rb')
+except:
+    print("Run the initial code first.")
+
+tweets=pickle.load(h)
+
+TABLE_NAME='hiranandani'
+
+created_at=[]
+sentiments=[]
+text2=[]
+for i in tweets:
+    created_at.append(i.created_at)
+    text2.append(i.text)
+    text1 = deEmojify(i.text)     
+    text=clean_tweet(text1)
+    sentiment = TextBlob(text).sentiment
+    polarity = sentiment.polarity
+    sentiments.append(polarity)
+
+
+df={'Time':pd.Series(created_at),'Text':pd.Series(text2),'Sentiment':pd.Series(sentiments)}
+finaldata=pd.DataFrame(df)
+
+sen=df['Sentiment']
+sen1=list(sen)
+sen2=list()
+for i in sen1:
+    sen2.append(round(i))
 
 
