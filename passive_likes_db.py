@@ -93,7 +93,9 @@ with concurrent.futures.ThreadPoolExecutor(8) as executor:
 
 print("--- %s seconds ---" % (time.time() - start_time))
 
-u_name=list(df['list'])
+df1=pd.read_sql("select username from passive",con=conn)
+
+u_name=list(df1['username'])
 
 for i in return_value:
     if i not in u_name:

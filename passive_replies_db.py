@@ -60,16 +60,20 @@ if(conn):
 df=pd.read_sql(query,con=conn)
 
 ids=cur.execute("select distinct id from {}".format(query_word))
-id1=ids.fetchall()
+id1=cur.fetchall()
 
+print("Getting unique tweets.")
 def unique(tweet_id):
     unique_tweets=list()
+    queue=set()
     for i in tweet_id:
-        try:
-            tweet = api.get_status(i)
-            unique_tweets.append(tweet)
-        except:
-            continue
+        if i not in queue:
+            try:
+                tweet = api.get_status(i)
+                unique_tweets.append(tweet)
+                queue.append(i)
+            except:
+                continue
     return unique_tweets
 
 with concurrent.futures.ThreadPoolExecutor(8) as executor:
@@ -80,19 +84,19 @@ with concurrent.futures.ThreadPoolExecutor(8) as executor:
 print("Getting replies.")
 def replies(tweets):
     li=list()
-    url1='https://twitter.com/'
+    queue=set()
     try: 
         for j in tweets:
-            if 'hiranandani' not in (j.user.screen_name).lower():
-                reply=api.search(q=j.user.screen_name,since_id=j.id,count=10000)
-                print("For User: ",j.user.screen_name)
-                url3=url1
-                url3+=j.user.screen_name+'/status/'+str(j.id) 
-                for i in reply:
-                    if i.in_reply_to_status_id==j.id:
-                        li.append(i.user.screen_name)                
-                        print(i.user.screen_name)
-                        print("\n")           
+            if j not in queue:
+                if 'hiranandani' not in (j.user.screen_name).lower():
+                    reply=api.search(q=j.user.screen_name,since_id=j.id,count=10000)
+                    print("For User: ",j.user.screen_name)
+                    for i in reply:
+                        if i.in_reply_to_status_id==j.id:
+                            li.append(i.user.screen_name)                
+                            print(i.user.screen_name)
+                            print("\n")           
+            queue.append(j)                        
     except Exception as e:
         print(e)
     return li
