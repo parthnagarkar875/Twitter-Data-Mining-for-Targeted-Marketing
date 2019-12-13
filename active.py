@@ -4,6 +4,7 @@ Created on Mon Dec  2 12:25:37 2019
 
 @author: Parth
 """
+import psycopg2
 import os
 import collections
 import re
@@ -31,6 +32,22 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 
 api = tweepy.API(auth,wait_on_rate_limit=True)
+
+def create_tweet_table(name):
+    conn = psycopg2.connect(database="Hiranandani", user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")
+    cur= conn.cursor()
+    cur.execute('''CREATE TABLE {} (ID BIGINT, TWEET_TEXT TEXT, CREATED_AT TIMESTAMP, LOCATION TEXT,POLARITY INT);'''.format(name))
+    conn.commit()
+    conn.close()
+
+def create_user_table():
+    conn = psycopg2.connect(database="tp", user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")
+    cur= conn.cursor()
+    cur.execute('''CREATE TABLE ACTIVE (USERNAME TEXT, POST_URL TEXT);''')
+    cur.execute('''CREATE TABLE PASSIVE (USERNAME TEXT);''')
+    conn.commit()
+    conn.close()
+
 
 def create_project_directory(directory):
     if not os.path.exists(directory):
