@@ -35,8 +35,8 @@ username_list=list()
 user_profile_list=list()
 stored_tweets=list()
 
-query='Trump'
-
+query='UKElection'
+word=[query.lower()]
 try:     
     conn = psycopg2.connect(database=query, user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")
 except:
@@ -49,7 +49,7 @@ class MyStreamListener(tweepy.StreamListener):
     def on_status(self, status):
         if status.retweeted:
             return True
-
+        print(status.text)
         text1 = active.deEmojify(status.text)     
         text=active.clean_tweet(text1)
         sentiment = TextBlob(text).sentiment
@@ -59,7 +59,7 @@ class MyStreamListener(tweepy.StreamListener):
         if(conn):
             mycursor = conn.cursor()
             sql = "INSERT INTO {} (id,tweet_text,created_at,location,polarity) VALUES \
-                   (%s, %s, %s, %s, %s)".format(query)
+                   (%s, %s, %s, %s, %s)".format(word[0])
             val = (status.id, status.text,status.created_at,status.user.location,polarity)
             mycursor.execute(sql, val)
             
@@ -87,7 +87,7 @@ if(conn):
         SELECT COUNT(*)
         FROM information_schema.tables
         WHERE table_name = '{0}'
-        """.format(query))
+        """.format(word[0]))
     if mycursor.fetchone()[0] != 1:
         active.create_tweet_table(query)        
         conn.commit()
@@ -97,26 +97,10 @@ if(conn):
 try:
     myStreamListener = MyStreamListener()
     myStream = tweepy.Stream(auth = api.auth, listener = myStreamListener)
-    myStream.filter(languages=["en"], track = 'trump')
+    myStream.filter(languages=["en"], track = word)
     
     conn.close()
 except Exception as e:
     print(e)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
