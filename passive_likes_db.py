@@ -34,6 +34,7 @@ word='passive'
 query_word='Hiranandani'
 query = "SELECT id, username,tweet_text, created_at,location,polarity FROM {}".format(query_word)
 
+
 try:     
     conn = psycopg2.connect(database=query_word, user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")
 except:

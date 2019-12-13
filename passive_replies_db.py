@@ -71,7 +71,7 @@ def unique(tweet_id):
             try:
                 tweet = api.get_status(i)
                 unique_tweets.append(tweet)
-                queue.append(i)
+                queue.add(i)
             except:
                 continue
     return unique_tweets
@@ -96,7 +96,7 @@ def replies(tweets):
                             li.append(i.user.screen_name)                
                             print(i.user.screen_name)
                             print("\n")           
-            queue.append(j)                        
+                    queue.add(j)                        
     except Exception as e:
         print(e)
     return li
