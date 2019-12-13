@@ -58,9 +58,9 @@ class MyStreamListener(tweepy.StreamListener):
         # Store all data in MySQL
         if(conn):
             mycursor = conn.cursor()
-            sql = "INSERT INTO {} (id,tweet_text,created_at,location,polarity) VALUES \
+            sql = "INSERT INTO {} (id,username, tweet_text,created_at,location,polarity) VALUES \
                    (%s, %s, %s, %s, %s)".format(word[0])
-            val = (status.id, status.text,status.created_at,status.user.location,polarity)
+            val = (status.id, status.user.screen_name,status.text,status.created_at,status.user.location,polarity)
             mycursor.execute(sql, val)
             
             conn.commit()
