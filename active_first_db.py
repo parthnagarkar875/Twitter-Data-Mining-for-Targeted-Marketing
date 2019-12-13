@@ -56,7 +56,7 @@ class MyStreamListener(tweepy.StreamListener):
         polarity = sentiment.polarity
 
         # Store all data in MySQL
-        if conn.is_connected():
+        if(conn):
             mycursor = conn.cursor()
             sql = "INSERT INTO {} (id,tweet_text,created_at,location,polarity) VALUES \
                    (%s, %s, %s, %s, %s)".format(query)
@@ -78,7 +78,7 @@ class MyStreamListener(tweepy.StreamListener):
             return False
 
 
-if conn.is_connected():
+if(conn):
     '''
     Check if this table exits. If not, then create a new one.
     '''
