@@ -47,17 +47,6 @@ except:
 tweets=pickle.load(h)
 
 
-def get_user_ids_of_post_likes(post_id):
-    try:
-        json_data = urllib.request.urlopen('https://twitter.com/i/activity/favorited_popup?id=' + str(post_id)).read()
-        json_data = json_data.decode('utf-8')
-        found_ids = re.findall(r'data-user-id=\\"+\d+', json_data)
-        unique_ids = list(set([re.findall(r'\d+', match)[0] for match in found_ids]))
-        return unique_ids
-
-    except urllib.request.HTTPError:
-        return False
-
 def get_uname(tweets):
     set1=set()
     likers=list()
@@ -65,7 +54,7 @@ def get_uname(tweets):
         if i.id not in set1:
             if 'hiranandani' not in (i.user.screen_name).lower():
                 try:
-                    id1=get_user_ids_of_post_likes(i.id)
+                    id1=active.get_user_ids_of_post_likes(i.id)
                     likers.extend(id1)        
                     set1.add(i.id)
                 except:

@@ -6,6 +6,7 @@ Created on Mon Dec  2 12:25:37 2019
 """
 import psycopg2
 import os
+import urllib
 import collections
 import re
 from nltk.probability import FreqDist
@@ -173,6 +174,18 @@ def pull_tweets(query):
             break
 
     return searched_tweets
+
+def get_user_ids_of_post_likes(post_id):
+    try:
+        json_data = urllib.request.urlopen('https://twitter.com/i/activity/favorited_popup?id=' + str(post_id)).read()
+        json_data = json_data.decode('utf-8')
+        found_ids = re.findall(r'data-user-id=\\"+\d+', json_data)
+        unique_ids = list(set([re.findall(r'\d+', match)[0] for match in found_ids]))
+        return unique_ids
+
+    except urllib.request.HTTPError:
+        return False
+
 
 #Sentiments of the tweets are predicted to classify them as negative, psoitive or neutral. 
 def analytics(stored_tweets):
