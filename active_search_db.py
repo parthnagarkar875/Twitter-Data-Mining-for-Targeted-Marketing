@@ -25,10 +25,12 @@ word=[query_word.lower()]
 query = "SELECT id, username,tweet_text, created_at,location,polarity FROM {}".format(query_word)
 
 try:     
-    conn = psycopg2.connect(database=query, user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")
+    conn = psycopg2.connect(database=query_word, user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")
 except:
     print("Create database first")
 
-df=pd.read_sql(query, con=conn)
-
-
+cur = conn.cursor()
+r=cur.execute('''select distinct username from hiranandani''')
+r1=cur.fetchall()
+conn.commit()
+conn.close()
