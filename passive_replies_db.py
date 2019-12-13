@@ -111,6 +111,15 @@ with concurrent.futures.ThreadPoolExecutor(8) as executor:
 print("--- %s seconds ---" % (time.time() - start_time))
 
 
+df1=pd.read_sql("select username from passive",con=conn)
+
+u_name=list(df1['username'])
+
+for i in return_value1:
+    if i not in u_name:
+        sql = "INSERT INTO {} (username,location) VALUES (%s, %s)".format(word)
+        val = (i, return_value1[i])
+        cur.execute(sql,val)
 
 
 
