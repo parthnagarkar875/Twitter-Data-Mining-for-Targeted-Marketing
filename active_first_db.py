@@ -20,15 +20,25 @@ import tweepy
 import psycopg2
 import re
 
+
+consumer_key='rNrnFupaEqKt0eb7hjbdHKdWg'
+consumer_secret= 'DTTMoQOrCBmngaXmOnFhrBjdjwtT54x0AbGvNwwuqyYNWwEvc7'
+access_token='1002268050513575936-gGrQUmDiMyCxO2Y88lc3ojqNzbtLGm'
+access_token_secret='G572YTe2S5TQTTaXhFvl1WyNopa8ilrkgWSlCXBZQwU4C'
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_token, access_token_secret)
+
+api = tweepy.API(auth,wait_on_rate_limit=True)
+
 url_list=list()
 username_list=list()
 user_profile_list=list()
 stored_tweets=list()
 
-query='hiranandani'
+query='UKElection'
 
 try:     
-    conn = psycopg2.connect(database='Hiranandani', user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")
+    conn = psycopg2.connect(database=query, user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")
 except:
     print("Create database first")
         
@@ -40,44 +50,21 @@ class MyStreamListener(tweepy.StreamListener):
         if status.retweeted:
             return True
 
-        id_str = status.id_str
-        created_at = status.created_at
-        text1 = deEmojify(status.text)     
-        text=clean_tweet(text1)
+        text1 = active.deEmojify(status.text)     
+        text=active.clean_tweet(text1)
         sentiment = TextBlob(text).sentiment
         polarity = sentiment.polarity
-        subjectivity = sentiment.subjectivity
-            
-        user_created_at = status.user.created_at
-        user_location = deEmojify(status.user.location)
-        user_description = deEmojify(status.user.description)
-        user_followers_count =status.user.followers_count
-        longitude = None
-        latitude = None
-        if status.coordinates:
-            longitude = status.coordinates['coordinates'][0]
-            latitude = status.coordinates['coordinates'][1]
-                
-        retweet_count = status.retweet_count
-        favorite_count = status.favorite_count     # Quick check contents in tweets
-        print(status.text)
-        #print("Long: {}, Lati: {}".format(longitude, latitude))
-            
+
         # Store all data in MySQL
-        if mydb.is_connected():
-            mycursor = mydb.cursor()
-            sql = "INSERT INTO {} (id_str,created_at,text,polarity,\
-                   subjectivity, user_created_at, user_location,\
-                   user_description, user_followers_count, longitude,\
-                   latitude, retweet_count, favorite_count) VALUES \
-                   (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)".format('hiranandani')
-            val = (id_str, created_at, text, polarity, subjectivity, user_created_at, user_location, \
-                user_description, user_followers_count, longitude, latitude, retweet_count, favorite_count)
+        if conn.is_connected():
+            mycursor = conn.cursor()
+            sql = "INSERT INTO {} (id,tweet_text,created_at,location,polarity) VALUES \
+                   (%s, %s, %s, %s, %s)".format(query)
+            val = (status.id, status.text,status.created_at,status.user.location,polarity)
             mycursor.execute(sql, val)
-            mydb.commit()
+            
+            conn.commit()
             mycursor.close()
-        
-        
         
         
         
@@ -100,7 +87,7 @@ if conn.is_connected():
         SELECT COUNT(*)
         FROM information_schema.tables
         WHERE table_name = '{0}'
-        """.format('hiranandani'))
+        """.format(query))
     if mycursor.fetchone()[0] != 1:
         active.create_tweet_table(query)        
         conn.commit()
@@ -110,9 +97,9 @@ if conn.is_connected():
 try:
     myStreamListener = MyStreamListener()
     myStream = tweepy.Stream(auth = api.auth, listener = myStreamListener)
-    myStream.filter(languages=["en"], track = 'hiranandani')
+    myStream.filter(languages=["en"], track = query)
     
-    mydb.close()
+    conn.close()
 except Exception as e:
     print(e)
 
