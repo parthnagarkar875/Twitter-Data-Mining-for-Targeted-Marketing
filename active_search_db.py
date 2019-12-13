@@ -48,12 +48,11 @@ if(conn):
 
 
 print("Pulling tweets")
-searched_tweets=active.pull_tweets(query)
+searched_tweets=active.pull_tweets(query_word)
 
 for i in searched_tweets:
     if i.retweeted:
-        return True
-    print(i.text)
+        continue
     text1 = active.deEmojify(i.text)     
     text=active.clean_tweet(text1)
     sentiment = TextBlob(text).sentiment
@@ -72,7 +71,7 @@ for i in searched_tweets:
         
 
 cur = conn.cursor()
-r=cur.execute('''select distinct username from hiranandani''')
+r=cur.execute('''select distinct username from {}'''.format(word[0]))
 r1=cur.fetchall()
 conn.commit()
 conn.close()
