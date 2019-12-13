@@ -29,10 +29,9 @@ access_token='1002268050513575936-gGrQUmDiMyCxO2Y88lc3ojqNzbtLGm'
 access_token_secret='G572YTe2S5TQTTaXhFvl1WyNopa8ilrkgWSlCXBZQwU4C'
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
-
 api = tweepy.API(auth,wait_on_rate_limit=True)
+word='passive'
 query_word='Hiranandani'
-word=[query_word.lower()]
 query = "SELECT id, username,tweet_text, created_at,location,polarity FROM {}".format(query_word)
 
 try:     
@@ -40,6 +39,8 @@ try:
 except:
     print("Create database first")
 
+cur= conn.cursor()
+        
 
 if(conn):
     '''
@@ -50,16 +51,53 @@ if(conn):
         SELECT COUNT(*)
         FROM information_schema.tables
         WHERE table_name = '{0}'
-        """.format(word[0]))
+        """.format(word))
     if mycursor.fetchone()[0] != 1:
-        active.create_tweet_table(query)        
+        cur.execute('''CREATE TABLE {} (USERNAME TEXT,LOCATION TEXT);'''.format(word))
         conn.commit()
     mycursor.close()
 
+df=pd.read_sql(query,con=conn)
+
+def get_uname(df):
+    set1=set()
+    likers=list()
+    for j,i in df.iterrows(): 
+        if i['id'] not in set1:
+            if 'hiranandani' not in (i['username']).lower():
+                try:
+                    id1=active.get_user_ids_of_post_likes(i['id'])
+                    likers.extend(id1)        
+                    set1.add(i['id'])
+                except:
+                    continue
+    set2=set()
+    likers_uname=dict()
+    
+    for i in likers:   
+        if i not in set2:
+            u=api.get_user(i)
+            likers_uname[u.screen_name]=u.location            
+            set2.add(i)
+            print(u.screen_name)
+
+
+    return likers_uname
 
 
 
+with concurrent.futures.ThreadPoolExecutor(8) as executor:
+    future = executor.submit(get_uname, df)
+    return_value = future.result()
 
+
+print("--- %s seconds ---" % (time.time() - start_time))
+
+for i in return_value:
+    
+    sql = "INSERT INTO {} (username,location) VALUES (%s, %s)".format(word)
+            val = (i, return_value[i])
+    cur.execute(sql,val)
 
 
 

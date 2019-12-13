@@ -41,14 +41,6 @@ def create_tweet_table(name):
     conn.commit()
     conn.close()
 
-def create_user_table():
-    conn = psycopg2.connect(database="tp", user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")
-    cur= conn.cursor()
-    cur.execute('''CREATE TABLE ACTIVE (USERNAME TEXT, POST_URL TEXT);''')
-    cur.execute('''CREATE TABLE PASSIVE (USERNAME TEXT);''')
-    conn.commit()
-    conn.close()
-
 
 def create_project_directory(directory):
     if not os.path.exists(directory):
