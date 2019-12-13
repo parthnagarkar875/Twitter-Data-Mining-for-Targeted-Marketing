@@ -29,6 +29,48 @@ try:
 except:
     print("Create database first")
 
+
+if(conn):
+    '''
+    Check if this table exits. If not, then create a new one.
+    '''
+    mycursor = conn.cursor()
+    mycursor.execute("""
+        SELECT COUNT(*)
+        FROM information_schema.tables
+        WHERE table_name = '{0}'
+        """.format(word[0]))
+    if mycursor.fetchone()[0] != 1:
+        active.create_tweet_table(query)        
+        conn.commit()
+    mycursor.close()
+
+
+
+print("Pulling tweets")
+searched_tweets=active.pull_tweets(query)
+
+for i in searched_tweets:
+    if i.retweeted:
+        return True
+    print(i.text)
+    text1 = active.deEmojify(i.text)     
+    text=active.clean_tweet(text1)
+    sentiment = TextBlob(text).sentiment
+    polarity = sentiment.polarity
+
+    # Store all data in MySQL
+    if(conn):
+        mycursor = conn.cursor()
+        if 'hiranandani' not in (i.user.screen_name).lower():
+            sql = "INSERT INTO {} (id,username, tweet_text,created_at,location,polarity) VALUES \
+                   (%s, %s,%s, %s, %s, %s)".format(word[0])
+            val = (i.id, i.user.screen_name,i.text,i.created_at,i.user.location,polarity)
+            mycursor.execute(sql, val)
+            
+            conn.commit()
+        
+
 cur = conn.cursor()
 r=cur.execute('''select distinct username from hiranandani''')
 r1=cur.fetchall()
