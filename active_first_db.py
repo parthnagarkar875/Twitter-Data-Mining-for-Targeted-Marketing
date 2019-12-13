@@ -35,7 +35,7 @@ username_list=list()
 user_profile_list=list()
 stored_tweets=list()
 
-query='UKElection'
+query='Trump'
 
 try:     
     conn = psycopg2.connect(database=query, user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")
@@ -97,7 +97,7 @@ if(conn):
 try:
     myStreamListener = MyStreamListener()
     myStream = tweepy.Stream(auth = api.auth, listener = myStreamListener)
-    myStream.filter(languages=["en"], track = query)
+    myStream.filter(languages=["en"], track = 'trump')
     
     conn.close()
 except Exception as e:
