@@ -4,10 +4,12 @@ Created on Fri Dec 13 11:22:22 2119
 
 @author: Parth
 """
+import active
 import psycopg2
 import pickle
 from textblob import TextBlob
 import re
+
 def clean_tweet(tweet): 
     ''' 
     Use simple regex statemnents to clean tweet text by removing links and special characters
@@ -26,6 +28,7 @@ def deEmojify(text):
 
 
 
+
 try:
     h=open('Hiranandani/tweets.pickle','rb')
 except:
@@ -33,27 +36,28 @@ except:
 
 stored_tweets=pickle.load(h)
 
+print(type(stored_tweets[0].user.screen_name))
 conn = psycopg2.connect(database="Hiranandani", user = "postgres", password = "parth123n@#*", host = "127.1.1.1", port = "5432")
 
 cur = conn.cursor()
-        
 
-      
+active.create_tweet_table('Hiranandani')
+
 for i in stored_tweets:
     text1=i.text                    
     text=clean_tweet(text1)
     sentiment = TextBlob(text).sentiment
     polar = sentiment.polarity
-    
-    sql = "INSERT INTO {} (id,tweet_text,created_at,location,polarity) VALUES \
-                   (%s, %s, %s, %s, %s)".format('hiranandani')
-    val = (i.id, i.text,i.created_at,i.user.location,polar)
-    cur.execute(sql, val)            
-    conn.commit()
+    if 'hiranandani' not in (i.user.screen_name).lower():
+        sql = "INSERT INTO {} (id,username,tweet_text,created_at,location,polarity) VALUES \
+                       (%s, %s, %s, %s, %s, %s)".format('hiranandani')
+        val = (i.id,i.user.screen_name, i.text,i.created_at,i.user.location,polar)
+        cur.execute(sql, val)            
+        conn.commit()
 
 conn.close()             
             
-            
+
 
 '''          
 cur = conn.cursor()
