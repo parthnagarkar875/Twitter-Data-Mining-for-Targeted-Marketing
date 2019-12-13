@@ -77,8 +77,6 @@ with concurrent.futures.ThreadPoolExecutor(8) as executor:
     future = executor.submit(get_uname, tweets)
     return_value = future.result()
 
-#like=set(return_value)
-#print(len(like))
 
 
 print("--- %s seconds ---" % (time.time() - start_time))

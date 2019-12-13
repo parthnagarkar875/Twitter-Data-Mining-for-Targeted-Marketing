@@ -40,7 +40,7 @@ except:
     print("Create database first")
 
 cur= conn.cursor()
-        
+
 
 if(conn):
     '''
@@ -93,11 +93,13 @@ with concurrent.futures.ThreadPoolExecutor(8) as executor:
 
 print("--- %s seconds ---" % (time.time() - start_time))
 
+u_name=list(df['list'])
+
 for i in return_value:
-    
-    sql = "INSERT INTO {} (username,location) VALUES (%s, %s)".format(word)
-            val = (i, return_value[i])
-    cur.execute(sql,val)
+    if i not in u_name:
+        sql = "INSERT INTO {} (username,location) VALUES (%s, %s)".format(word)
+        val = (i, return_value[i])
+        cur.execute(sql,val)
 
 
 

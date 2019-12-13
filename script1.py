@@ -1,67 +1,33 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Dec 13 11:22:22 2119
-
-@author: Parth
-"""
-import active
+import pandas as pd
 import psycopg2
 import pickle
-from textblob import TextBlob
-import re
-
-def clean_tweet(tweet): 
-    ''' 
-    Use simple regex statemnents to clean tweet text by removing links and special characters
-    '''
-    return ' '.join(re.sub("(@[A-Za-z1-9]+)|([^1-9A-Za-z \t]) \
-                                |(\w+:\/\/\S+)", " ", tweet).split()) 
-
-def deEmojify(text):
-    '''
-    Strip all non-ASCII characters to remove emoji characters
-    '''
-    if text:
-        return text.encode('ascii', 'ignore').decode('ascii')
-    else:
-        return None
 
 
+df=pd.read_csv('Hiranandani/passive.csv')
+query_word='Hiranandani'
+query="INSERT INTO passive(username,location) values(%s,%s)"
 
-
+try:     
+    conn = psycopg2.connect(database=query_word, user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")
+except:
+    print("Create database first")
+    
+cur=conn.cursor()
 try:
     h=open('Hiranandani/tweets.pickle','rb')
 except:
     print("Run the initial code first.")
 
-stored_tweets=pickle.load(h)
+tweets=pickle.load(h)
+uname_loc=dict()
 
-print(type(stored_tweets[0].user.screen_name))
-conn = psycopg2.connect(database="Hiranandani", user = "postgres", password = "parth123n@#*", host = "127.1.1.1", port = "5432")
-
-cur = conn.cursor()
-
-active.create_tweet_table('Hiranandani')
-
-for i in stored_tweets:
-    text1=i.text                    
-    text=clean_tweet(text1)
-    sentiment = TextBlob(text).sentiment
-    polar = sentiment.polarity
-    if 'hiranandani' not in (i.user.screen_name).lower():
-        sql = "INSERT INTO {} (id,username,tweet_text,created_at,location,polarity) VALUES \
-                       (%s, %s, %s, %s, %s, %s)".format('hiranandani')
-        val = (i.id,i.user.screen_name, i.text,i.created_at,i.user.location,polar)
-        cur.execute(sql, val)            
-        conn.commit()
-
-conn.close()             
-            
+for i in tweets:
+    uname_loc[i.user.screen_name]=i.user.location
 
 
-'''          
-cur = conn.cursor()
-cur.execute('''#INSERT INTO yogiadityanath()''')
-#print("Table created successfully")
-
-#'''
+for i in uname_loc:
+    val=(i,uname_loc[i])
+    cur.execute(query,val)
+    
+conn.commit()
+conn.close()
