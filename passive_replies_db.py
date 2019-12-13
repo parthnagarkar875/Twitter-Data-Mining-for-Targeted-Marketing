@@ -79,7 +79,9 @@ def unique(tweet_id):
 with concurrent.futures.ThreadPoolExecutor(8) as executor:
     future = executor.submit(unique, id1)
     unique_value = future.result()
-    
+
+print("--- %s seconds ---" % (time.time() - start_time))
+
     
 print("Getting replies.")
 def replies(tweets):
