@@ -35,7 +35,7 @@ username_list=list()
 user_profile_list=list()
 stored_tweets=list()
 
-query='UKElection'
+query='Hiranandani'
 word=[query.lower()]
 try:     
     conn = psycopg2.connect(database=query, user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")
