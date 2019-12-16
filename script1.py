@@ -1,6 +1,66 @@
-import itertools
-STATES = ['Alabama', 'AL', 'Alaska', 'AK', 'American Samoa', 'AS', 'Arizona', 'AZ', 'Arkansas', 'AR', 'California', 'CA', 'Colorado', 'CO', 'Connecticut', 'CT', 'Delaware', 'DE', 'District of Columbia', 'DC', 'Federated States of Micronesia', 'FM', 'Florida', 'FL', 'Georgia', 'GA', 'Guam', 'GU', 'Hawaii', 'HI', 'Idaho', 'ID', 'Illinois', 'IL', 'Indiana', 'IN', 'Iowa', 'IA', 'Kansas', 'KS', 'Kentucky', 'KY', 'Louisiana', 'LA', 'Maine', 'ME', 'Marshall Islands', 'MH', 'Maryland', 'MD', 'Massachusetts', 'MA', 'Michigan', 'MI', 'Minnesota', 'MN', 'Mississippi', 'MS', 'Missouri', 'MO', 'Montana', 'MT', 'Nebraska', 'NE', 'Nevada', 'NV', 'New Hampshire', 'NH', 'New Jersey', 'NJ', 'New Mexico', 'NM', 'New York', 'NY', 'North Carolina', 'NC', 'North Dakota', 'ND', 'Northern Mariana Islands', 'MP', 'Ohio', 'OH', 'Oklahoma', 'OK', 'Oregon', 'OR', 'Palau', 'PW', 'Pennsylvania', 'PA', 'Puerto Rico', 'PR', 'Rhode Island', 'RI', 'South Carolina', 'SC', 'South Dakota', 'SD', 'Tennessee', 'TN', 'Texas', 'TX', 'Utah', 'UT', 'Vermont', 'VT', 'Virgin Islands', 'VI', 'Virginia', 'VA', 'Washington', 'WA', 'West Virginia', 'WV', 'Wisconsin', 'WI', 'Wyoming', 'WY']
-STATE_DICT = dict(itertools.zip_longest(*[iter(STATES)] * 2, fillvalue=""))
-INV_STATE_DICT = dict((v,k) for k,v in STATE_DICT.items())
+import string
+import numpy as np
+import pandas as pd
+import tweepy
+import re
+from datetime import datetime
+from dateutil import tz
+import time
 
-a='hello'
+consumer_key='rNrnFupaEqKt0eb7hjbdHKdWg'
+consumer_secret= 'DTTMoQOrCBmngaXmOnFhrBjdjwtT54x0AbGvNwwuqyYNWwEvc7'
+access_token='1002268050513575936-gGrQUmDiMyCxO2Y88lc3ojqNzbtLGm'
+access_token_secret='G572YTe2S5TQTTaXhFvl1WyNopa8ilrkgWSlCXBZQwU4C'
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_token, access_token_secret)
+
+api = tweepy.API(auth,wait_on_rate_limit=True)
+
+url_list=list()
+username_list=list()
+user_profile_list=list()
+stored_tweets=list()
+
+query='IITBombay'
+word=[query.lower()]
+    
+class MyStreamListener(tweepy.StreamListener):
+
+    def on_status(self, status):
+        if status.retweeted:
+            return True
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
+        
+        utc = status.created_at
+        
+        
+        # Tell the datetime object that it's in UTC time zone since 
+        # datetime objects are 'naive' by default
+        utc = utc.replace(tzinfo=from_zone)
+        
+        # Convert time zone
+        central = utc.astimezone(to_zone)
+        print(central)
+    
+        
+        
+    def on_error(self, status_code):
+        '''
+        Since Twitter API has rate limits, 
+        stop srcraping data as it exceed to the thresold.
+        '''
+        if status_code == 420:
+            # return False to disconnect the stream
+            return False
+
+
+try:
+    myStreamListener = MyStreamListener()
+    myStream = tweepy.Stream(auth = api.auth, listener = myStreamListener)
+    myStream.filter(languages=["en"], track = word)
+    
+except Exception as e:
+    print(e)
+
+
