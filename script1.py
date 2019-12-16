@@ -1,33 +1,6 @@
-import pandas as pd
-import psycopg2
-import pickle
+import itertools
+STATES = ['Alabama', 'AL', 'Alaska', 'AK', 'American Samoa', 'AS', 'Arizona', 'AZ', 'Arkansas', 'AR', 'California', 'CA', 'Colorado', 'CO', 'Connecticut', 'CT', 'Delaware', 'DE', 'District of Columbia', 'DC', 'Federated States of Micronesia', 'FM', 'Florida', 'FL', 'Georgia', 'GA', 'Guam', 'GU', 'Hawaii', 'HI', 'Idaho', 'ID', 'Illinois', 'IL', 'Indiana', 'IN', 'Iowa', 'IA', 'Kansas', 'KS', 'Kentucky', 'KY', 'Louisiana', 'LA', 'Maine', 'ME', 'Marshall Islands', 'MH', 'Maryland', 'MD', 'Massachusetts', 'MA', 'Michigan', 'MI', 'Minnesota', 'MN', 'Mississippi', 'MS', 'Missouri', 'MO', 'Montana', 'MT', 'Nebraska', 'NE', 'Nevada', 'NV', 'New Hampshire', 'NH', 'New Jersey', 'NJ', 'New Mexico', 'NM', 'New York', 'NY', 'North Carolina', 'NC', 'North Dakota', 'ND', 'Northern Mariana Islands', 'MP', 'Ohio', 'OH', 'Oklahoma', 'OK', 'Oregon', 'OR', 'Palau', 'PW', 'Pennsylvania', 'PA', 'Puerto Rico', 'PR', 'Rhode Island', 'RI', 'South Carolina', 'SC', 'South Dakota', 'SD', 'Tennessee', 'TN', 'Texas', 'TX', 'Utah', 'UT', 'Vermont', 'VT', 'Virgin Islands', 'VI', 'Virginia', 'VA', 'Washington', 'WA', 'West Virginia', 'WV', 'Wisconsin', 'WI', 'Wyoming', 'WY']
+STATE_DICT = dict(itertools.zip_longest(*[iter(STATES)] * 2, fillvalue=""))
+INV_STATE_DICT = dict((v,k) for k,v in STATE_DICT.items())
 
-
-df=pd.read_csv('Hiranandani/passive.csv')
-query_word='Hiranandani'
-query="INSERT INTO passive(username,location) values(%s,%s)"
-
-try:     
-    conn = psycopg2.connect(database=query_word, user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")
-except:
-    print("Create database first")
-    
-cur=conn.cursor()
-try:
-    h=open('Hiranandani/tweets.pickle','rb')
-except:
-    print("Run the initial code first.")
-
-tweets=pickle.load(h)
-uname_loc=dict()
-
-for i in tweets:
-    uname_loc[i.user.screen_name]=i.user.location
-
-
-for i in uname_loc:
-    val=(i,uname_loc[i])
-    cur.execute(query,val)
-    
-conn.commit()
-conn.close()
+a='hello'
