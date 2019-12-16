@@ -31,8 +31,8 @@ auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth,wait_on_rate_limit=True)
 
 
-query_word='Hiranandani2'
-word=['hiranandani2']
+query_word='Hiranandani'
+word=['No_Loco']
 
 #Opening the file containing previously stored tweets
 try:
@@ -49,19 +49,19 @@ except:
     print("Create database first")
 
         
-active.create_tweet_table('Hiranandani2')
+active.create_tweet_table(query_word)
 for i in real_tweets:
     try:
         text1 = active.deEmojify(i.text)     
         text=active.clean_tweet(text1)
         sentiment = TextBlob(text).sentiment
         polarity = sentiment.polarity
-        userOBJ = api.get_user(i.username)
+        #userOBJ = api.get_user(i.username)
         if(conn):
             mycursor = conn.cursor()
-            sql = "INSERT INTO {} (id,username, tweet_text,created_at,location,polarity) VALUES \
-                   (%s, %s,%s, %s, %s, %s)".format(word[0])
-            val = (i.id, i.username,i.text,i.date,userOBJ.location,polarity)
+            sql = "INSERT INTO {} (id,username, tweet_text,created_at,polarity) VALUES \
+                   (%s, %s,%s, %s, %s)".format(word[0])
+            val = (i.id, i.username,i.text,i.date,polarity)
             mycursor.execute(sql, val)
             
             conn.commit()
@@ -71,4 +71,13 @@ for i in real_tweets:
 conn.close()
 
 
-print(real_tweets[5002].text)
+
+
+
+
+
+
+
+
+
+
