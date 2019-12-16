@@ -1,37 +1,78 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Dec 13 14:03:11 2019
+
+@author: Parth
+"""
+import collections
+from collections import Counter
+import pickle 
 import string
-import numpy as np
 import pandas as pd
+from textblob import TextBlob
+import matplotlib.pyplot as plt
+from nltk.corpus import stopwords 
+from nltk.tokenize import word_tokenize 
+from math import ceil
 import tweepy
-import re
-from datetime import datetime
-from dateutil import tz
-import time
 import active
-import GetOldTweets3 as got
+import numpy as np
+import psycopg2
+#creating a separate folder for  each tweet
 
-consumer_key='rNrnFupaEqKt0eb7hjbdHKdWg'
-consumer_secret= 'DTTMoQOrCBmngaXmOnFhrBjdjwtT54x0AbGvNwwuqyYNWwEvc7'
-access_token='1002268050513575936-gGrQUmDiMyCxO2Y88lc3ojqNzbtLGm'
-access_token_secret='G572YTe2S5TQTTaXhFvl1WyNopa8ilrkgWSlCXBZQwU4C'
-auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-auth.set_access_token(access_token, access_token_secret)
+query_word='Hiranandani'
+word=[query_word.lower()]
+query = "SELECT id, username,tweet_text, created_at,location,polarity FROM {}".format(query_word)
 
-api = tweepy.API(auth,wait_on_rate_limit=True)
+try:     
+    conn = psycopg2.connect(database=query_word, user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")
+except:
+    print("Create database first")
 
-query='(purchase mumbai flat) OR (purchase mumbai property)'
-query1= '(purchase mumbai flat) OR (purchase mumbai property) OR (rent flat mumbai) OR (rent property mumbai)'
 
-tweetCriteria = got.manager.TweetCriteria().setQuerySearch('Hiranandani')\
-                                           .setSince("2019-05-01")\
-                                           .setUntil("2019-12-16")\
-                                           .setMaxTweets(1000)
-tweet = got.manager.TweetManager.getTweets(tweetCriteria)
-#print(tweet.text)
+if(conn):
+    '''
+    Check if this table exits. If not, then create a new one.
+    '''
+    mycursor = conn.cursor()
+    mycursor.execute("""
+        SELECT COUNT(*)
+        FROM information_schema.tables
+        WHERE table_name = '{0}'
+        """.format(word[0]))
+    if mycursor.fetchone()[0] != 1:
+        active.create_tweet_table(query)        
+        conn.commit()
+    mycursor.close()
 
-url="https://twitter.com/"
 
-list1=[]
-for i in tweet:
-    url2=url
-    url2+=i.username+"/status/"+i.id
-    list1.append(url2)
+
+
+for i in searched_tweets:
+    if i.retweeted:
+        continue
+    text1 = active.deEmojify(i.text)     
+    text=active.clean_tweet(text1)
+    sentiment = TextBlob(text).sentiment
+    polarity = sentiment.polarity
+
+    # Store all data in MySQL
+    if(conn):
+        mycursor = conn.cursor()
+        if 'hiranandani' not in (i.user.screen_name).lower():
+            sql = "INSERT INTO {} (id,username, tweet_text,created_at,location,polarity) VALUES \
+                   (%s, %s,%s, %s, %s, %s)".format(word[0])
+            val = (i.id, i.user.screen_name,i.text,i.created_at,i.user.location,polarity)
+            mycursor.execute(sql, val)
+            
+            conn.commit()
+        
+
+cur = conn.cursor()
+r=cur.execute('''select distinct username from {}'''.format(word[0]))
+r1=cur.fetchall()
+conn.commit()
+conn.close()
+
+
+
