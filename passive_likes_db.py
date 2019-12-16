@@ -104,9 +104,8 @@ for i in return_value:
         val = (i, return_value[i])
         cur.execute(sql,val)
 
-
-
-
+conn.commit()
+conn.close()
 
 
 

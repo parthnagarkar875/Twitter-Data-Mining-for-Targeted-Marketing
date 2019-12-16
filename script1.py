@@ -6,6 +6,8 @@ import re
 from datetime import datetime
 from dateutil import tz
 import time
+import active
+import GetOldTweets3 as got
 
 consumer_key='rNrnFupaEqKt0eb7hjbdHKdWg'
 consumer_secret= 'DTTMoQOrCBmngaXmOnFhrBjdjwtT54x0AbGvNwwuqyYNWwEvc7'
@@ -16,51 +18,20 @@ auth.set_access_token(access_token, access_token_secret)
 
 api = tweepy.API(auth,wait_on_rate_limit=True)
 
-url_list=list()
-username_list=list()
-user_profile_list=list()
-stored_tweets=list()
+query='(purchase mumbai flat) OR (purchase mumbai property)'
+query1= '(purchase mumbai flat) OR (purchase mumbai property) OR (rent flat mumbai) OR (rent property mumbai)'
 
-query='IITBombay'
-word=[query.lower()]
-    
-class MyStreamListener(tweepy.StreamListener):
+tweetCriteria = got.manager.TweetCriteria().setQuerySearch('Hiranandani')\
+                                           .setSince("2019-05-01")\
+                                           .setUntil("2019-12-16")\
+                                           .setMaxTweets(1000)
+tweet = got.manager.TweetManager.getTweets(tweetCriteria)
+#print(tweet.text)
 
-    def on_status(self, status):
-        if status.retweeted:
-            return True
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
-        
-        utc = status.created_at
-        
-        
-        # Tell the datetime object that it's in UTC time zone since 
-        # datetime objects are 'naive' by default
-        utc = utc.replace(tzinfo=from_zone)
-        
-        # Convert time zone
-        central = utc.astimezone(to_zone)
-        print(central)
-    
-        
-        
-    def on_error(self, status_code):
-        '''
-        Since Twitter API has rate limits, 
-        stop srcraping data as it exceed to the thresold.
-        '''
-        if status_code == 420:
-            # return False to disconnect the stream
-            return False
+url="https://twitter.com/"
 
-
-try:
-    myStreamListener = MyStreamListener()
-    myStream = tweepy.Stream(auth = api.auth, listener = myStreamListener)
-    myStream.filter(languages=["en"], track = word)
-    
-except Exception as e:
-    print(e)
-
-
+list1=[]
+for i in tweet:
+    url2=url
+    url2+=i.username+"/status/"+i.id
+    list1.append(url2)
