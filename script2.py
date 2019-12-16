@@ -49,8 +49,7 @@ except:
     print("Create database first")
 
         
-active.create_tweet_table('hiranandani2')
-    
+active.create_tweet_table('Hiranandani2')
 for i in real_tweets:
     try:
         text1 = active.deEmojify(i.text)     
@@ -72,4 +71,4 @@ for i in real_tweets:
 conn.close()
 
 
-
+print(real_tweets[5002].text)
