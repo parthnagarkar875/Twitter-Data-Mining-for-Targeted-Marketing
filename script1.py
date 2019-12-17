@@ -1,4 +1,3 @@
-
 import time
 import threading
 import urllib
@@ -14,6 +13,7 @@ from pathlib import Path
 import pandas as pd
 import concurrent.futures 
 import psycopg2
+import GetOldTweets3 as got
 import tweepy
 start_time = time.time()
 consumer_key='rNrnFupaEqKt0eb7hjbdHKdWg'
@@ -24,65 +24,31 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth,wait_on_rate_limit=True)
 
-try:
-    h=open('Hiranandani/tweets_hira_new.pickle','rb')
-except:
-    print("Run the initial code first.")
+query2=" (buying mumbai flat) OR (buying mumbai property) OR (buying mumbai real estate) OR (purchasing mumbai flat) OR (purchasing mumbai property) OR (purchasing real estate mumbai) OR (buy mumbai flat) OR (buy mumbai property) OR (buy mumbai real estate) OR (purchase mumbai flat) OR (purchase mumbai property) OR (purchase real estate mumbai) -sale"
 
-real_tweets=pickle.load(h)
+query_chennai= "(buying chennai flat) OR (buying chennai property) OR (buying chennai real estate) OR (purchasing chennai flat) OR (purchasing chennai property) OR (purchasing real estate chennai) OR (buy chennai flat) OR (buy chennai property) OR (buy chennai real estate) OR (purchase chennai flat) OR (purchase chennai property) OR (purchase real estate chennai) -sale"
 
-
-def get_user_ids_of_post_likes(post_id):
-    try:
-        json_data = urllib.request.urlopen('https://twitter.com/i/activity/favorited_popup?id=' + str(post_id)).read()
-        json_data = json_data.decode('utf-8')
-        found_ids = re.findall(r'data-user-id=\\"+\d+', json_data)
-        unique_ids = list(set([re.findall(r'\d+', match)[0] for match in found_ids]))
-        return unique_ids
-
-    except urllib.request.HTTPError:
-        return False
+tweetCriteria = got.manager.TweetCriteria().setQuerySearch(query2)\
+                                           .setSince("2019-01-01")\
+                                           .setUntil("2019-12-16")\
+                                           .setMaxTweets(1000)
+tweet = got.manager.TweetManager.getTweets(tweetCriteria)
 
 
+for i in tweet:
+    print(i.date,"\n\n")
 
-def get_uname(tweets):
-    set1=set()
-    likers=list()
-    for i in tweets: 
-        if i.id not in set1:
-            if 'hiranandani' not in (i.username).lower():
-                try:
-                    id1=get_user_ids_of_post_likes(i.id)
-                    likers.extend(id1)        
-                    set1.add(i.id)
-                except:
-                    continue
-    set2=set()
-    likers_uname=dict()
-    
-    for i in likers:   
-        if i not in set2:
-            u=api.get_user(i)
-            likers_uname[u.screen_name]=u.location            
-            set2.add(i)
-            print(u.screen_name)
+'''
+I am buying a flat in Mumbai
+I am purchasing a property in Mumbai
 
+I want to purchase a flat in Mumbai.
+I want to purchase a property in Mumbai
 
-    return likers_uname
+I want to buy a flat in Mumbai
+I want to buy a property in Mumbai
 
-
-
-with concurrent.futures.ThreadPoolExecutor(8) as executor:
-    future = executor.submit(get_uname, real_tweets)
-    return_value = future.result()
-
-
-print("--- %s seconds ---" % (time.time() - start_time))
-
-
-
-finaldata={'Users':pd.Series(return_value)}
-df=pd.DataFrame(finaldata)
+'''
 
 
 

@@ -26,4 +26,4 @@ access_token = "EAAmMobTZBYy8BAC133IUZCB7JpMuEzqcY9sjpA73m4POSnm3lbLbV6UfDyZAe5v
 graph = GraphAPI(access_token)
 
 # Get my latest posts
-graph.get('me/posts')
+t=graph.search('Mumbai Property Market',type='group')

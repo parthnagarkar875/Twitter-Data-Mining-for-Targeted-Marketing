@@ -82,3 +82,11 @@ plt.xlabel('Words',fontsize=10)
 plt.ylabel('Frequency',fontsize=10)
 plt.xticks(index,x,fontsize=7,rotation=30)
 plt.show()
+
+
+
+
+
+
+
+
