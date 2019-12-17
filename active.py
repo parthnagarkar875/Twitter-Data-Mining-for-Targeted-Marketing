@@ -37,7 +37,7 @@ api = tweepy.API(auth,wait_on_rate_limit=True)
 def create_tweet_table(name):
     conn = psycopg2.connect(database=name, user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")
     cur= conn.cursor()
-    cur.execute('''CREATE TABLE {} (ID BIGINT, USERNAME TEXT,TWEET_TEXT TEXT, CREATED_AT TIMESTAMP, POLARITY INT);'''.format('no_loco'))
+    cur.execute('''CREATE TABLE {} (ID BIGINT, USERNAME TEXT,TWEET_TEXT TEXT, CREATED_AT TIMESTAMP, LOCATION TEXT,POLARITY INT);'''.format(name))
     conn.commit()
     conn.close()
 
