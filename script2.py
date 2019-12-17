@@ -21,26 +21,19 @@ import numpy as np
 import psycopg2
 #creating a separate folder for  each tweet
 
-consumer_key='rNrnFupaEqKt0eb7hjbdHKdWg'
-consumer_secret= 'DTTMoQOrCBmngaXmOnFhrBjdjwtT54x0AbGvNwwuqyYNWwEvc7'
-access_token='1002268050513575936-gGrQUmDiMyCxO2Y88lc3ojqNzbtLGm'
-access_token_secret='G572YTe2S5TQTTaXhFvl1WyNopa8ilrkgWSlCXBZQwU4C'
-auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-auth.set_access_token(access_token, access_token_secret)
-
-api = tweepy.API(auth,wait_on_rate_limit=True)
-
-
 query_word='Hiranandani'
-word=['No_Loco']
+word=['passive']
 
 #Opening the file containing previously stored tweets
 try:
-    h=open('Hiranandani/tweets_hira_new.pickle','rb')
+    h=open('Hiranandani/passive.pickle','rb')
 except:
     print("Run the initial code first.")
 
-real_tweets=pickle.load(h)
+users=pickle.load(h)
+
+df=users.reset_index()
+df=df.rename(columns = {"index": "Users", "Users":"Location"}) 
 
 
 try:     
@@ -49,32 +42,19 @@ except:
     print("Create database first")
 
         
-active.create_tweet_table(query_word)
-for i in real_tweets:
-    try:
-        text1 = active.deEmojify(i.text)     
-        text=active.clean_tweet(text1)
-        sentiment = TextBlob(text).sentiment
-        polarity = sentiment.polarity
-        #userOBJ = api.get_user(i.username)
-        if(conn):
-            mycursor = conn.cursor()
-            sql = "INSERT INTO {} (id,username, tweet_text,created_at,polarity) VALUES \
-                   (%s, %s,%s, %s, %s)".format(word[0])
-            val = (i.id, i.username,i.text,i.date,polarity)
-            mycursor.execute(sql, val)
-            
-            conn.commit()
-    except:
-        continue
+cur=conn.cursor()
+cur.execute('''CREATE TABLE {} (USERNAME TEXT, LOCATION TEXT);'''.format(word[0]))
+
+conn.commit()
+    
+for j,i in df.iterrows():
+    query='INSERT INTO {} (username, location) VALUES (%s, %s)'.format(word[0])
+    val= (i['Users'],i['Location'])
+    cur.execute(query,val)
+    conn.commit()
+
 
 conn.close()
-
-
-
-
-
-
 
 
 
