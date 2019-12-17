@@ -58,6 +58,8 @@ conn.close()
 
 
 
-
-
+st="Real estate issue. Make a video to help people what to do and help me also. I have purchased under-construction property from Mumbai's well-known builder. At time of purchase he said he has all permissions for 23 floors of building, I have purchased flat at 21st."
+t=TextBlob(st)
+print(t.subjectivity)
+print(t.objectivity)
 
