@@ -25,7 +25,6 @@ auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth,wait_on_rate_limit=True)
 
 query2=" (buying mumbai flat) OR (buying mumbai property) OR (buying mumbai real estate) OR (purchasing mumbai flat) OR (purchasing mumbai property) OR (purchasing real estate mumbai) OR (buy mumbai flat) OR (buy mumbai property) OR (buy mumbai real estate) OR (purchase mumbai flat) OR (purchase mumbai property) OR (purchase real estate mumbai) -sale"
-
 query_chennai= "(buying chennai flat) OR (buying chennai property) OR (buying chennai real estate) OR (purchasing chennai flat) OR (purchasing chennai property) OR (purchasing real estate chennai) OR (buy chennai flat) OR (buy chennai property) OR (buy chennai real estate) OR (purchase chennai flat) OR (purchase chennai property) OR (purchase real estate chennai) -sale"
 
 tweetCriteria = got.manager.TweetCriteria().setQuerySearch(query2)\
