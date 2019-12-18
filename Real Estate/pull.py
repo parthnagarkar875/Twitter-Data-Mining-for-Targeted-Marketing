@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Dec 18 17:21:46 2019
+
+@author: Parth
+"""
+
 import time
 import threading
 import urllib
@@ -47,40 +54,39 @@ move= "(move mumbai flat) OR (moving mumbai flat) OR (move mumbai property) OR (
 
 
 
+    
+try:     
+    conn = psycopg2.connect(database='Hiranandani', user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")    
+except:
+    print("Create database first")
+
+cur= conn.cursor()
 
 
-tweetCriteria = got.manager.TweetCriteria().setQuerySearch(query2)\
+
+def create_tweet_table(name):
+    cur.execute('''CREATE TABLE {} (ID BIGINT, USERNAME TEXT,TWEET_TEXT TEXT, CREATED_AT TIMESTAMP, LOCATION TEXT,POLARITY INT);'''.format(name))
+    conn.commit()
+    conn.close()
+
+
+
+tweetCriteria = got.manager.TweetCriteria().setQuerySearch(working_mumbai)\
                                            .setSince("2019-01-01")\
-                                           .setUntil("2019-12-16")\
-                                           .setMaxTweets(1000)
+                                           .setUntil("2019-12-18")\
+                                           .setMaxTweets(100000)
 tweet = got.manager.TweetManager.getTweets(tweetCriteria)
 
 
-for i in tweet:
-    print(i.date,"\n\n")
 
 
 
-'''
-I am buying a flat in Mumbai
-I am purchasing a property in Mumbai
 
-I want to purchase a flat in Mumbai.
-I want to purchase a property in Mumbai
 
-I want to buy a flat in Mumbai
-I want to buy a property in Mumbai
 
-Buying a house in Mumbai
-Purchasing a house in Mumbai
-Buy a home
-Purchasing a home
 
-I am shifting to Mumbai
-I am moving to Mumbai
 
-I am looking to buy a flat in Mumbai
-I am looking to purchase a flat in mumbai
 
-I am searching for a flat in Mumbai
-'''
+
+
+
