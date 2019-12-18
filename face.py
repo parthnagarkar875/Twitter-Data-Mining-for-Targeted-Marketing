@@ -9,7 +9,7 @@ page_token = "EAAmMobTZBYy8BAC133IUZCB7JpMuEzqcY9sjpA73m4POSnm3lbLbV6UfDyZAe5vMW
 app_token= "2687900944589615|KZYqSAv6zwtCe0Jim_6VxKpODsA"
 
 graph = facebook.GraphAPI(access_token=app_token, version = "5.0")
-pages_data = graph.get_object("leomessi")
+pages_data = graph.get_object(id=664463020378989)
 print(pages_data)
 '''
 import pyfacebook
