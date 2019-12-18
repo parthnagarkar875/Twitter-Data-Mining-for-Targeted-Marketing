@@ -10,9 +10,44 @@
 (purchase mumbai flat) OR 
 (purchase mumbai property) OR 
 (purchase real estate mumbai) 
--sale
-lloking searching builders
+(shift mumbai flat) OR 
+(shifting mumbai flat) OR 
+(shift mumbai property) OR 
+(shifting mumbai property) OR 
+(shift mumbai house) OR 
+(shifting mumbai house) OR
+(move mumbai flat) OR 
+(moving mumbai flat) OR 
+(move mumbai property) OR 
+(moving mumbai property) OR 
+(move mumbai house) OR 
+(moving mumbai house)
+(looking mumbai flat) OR 
+(looking mumbai property) OR 
+(looking mumbai real estate) OR 
+(searching mumbai flat) OR 
+(searching mumbai property) OR 
+(searching real estate mumbai) OR 
+(look mumbai flat) OR 
+(look mumbai property) OR 
+(look mumbai real estate) OR 
+(search mumbai flat) OR 
+(search mumbai property) OR 
+(search real estate mumbai) OR
+(buying mumbai apartment) OR 
+(purchasing mumbai apartment) OR 
+(buy mumbai apartment) OR 
+(purchase mumbai apartment) OR
 
+Irrelevant:
+(book mumbai flat) OR 
+(book mumbai property) OR 
+(book mumbai house)
+-sale
+
+Old:
+(who best builder mumbai) OR 
+(what best builder mumbai) OR
 
 
 

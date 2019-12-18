@@ -39,7 +39,7 @@ query_chennai= "(buying chennai flat) OR (buying chennai property) OR (buying ch
 
 home_house= "(buying mumbai home) OR (buying mumbai house) OR (purchasing mumbai home) OR (purchasing mumbai house) OR (buy mumbai home) OR (buy mumbai house) OR (purchase mumbai home) OR (purchase mumbai house) -sale"
 
-looking_searching= "(looking mumbai flat) OR (looking mumbai property) OR (looking mumbai real estate) OR (searching mumbai flat) OR (searching mumbai property) OR (searching real estate mumbai) OR (look mumbai flat) OR (look mumbai property) OR (look mumbai real estate) OR (search mumbai flat) OR (search mumbai property) OR (search real estate mumbai) -sale"
+looking_searching= "(looking mumbai house) OR (looking mumbai flat) OR (looking mumbai property) OR (looking mumbai real estate) OR (searching mumbai flat) OR (searching mumbai house) OR (searching mumbai property) OR (searching real estate mumbai) OR (look mumbai house) OR (look mumbai flat) OR (look mumbai property) OR (look mumbai real estate) OR (search mumbai flat) OR (search mumbai house) OR (search mumbai property) OR (search real estate mumbai) -sale"
 
 shift="(shift mumbai flat) OR (shifting mumbai flat) OR (shift mumbai property) OR (shifting mumbai property) OR (shift mumbai house) OR (shifting mumbai house) -pack"
 
