@@ -70,9 +70,7 @@ for i in searched_tweets:
             conn.commit()
         
 
-cur = conn.cursor()
-r=cur.execute('''select distinct username from {}'''.format(word[0]))
-r1=cur.fetchall()
+
 conn.commit()
 conn.close()
 
