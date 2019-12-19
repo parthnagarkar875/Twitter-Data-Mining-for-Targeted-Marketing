@@ -22,7 +22,6 @@ import psycopg2
 #creating a separate folder for  each tweet
 
 
-
 consumer_key='rNrnFupaEqKt0eb7hjbdHKdWg'
 consumer_secret= 'DTTMoQOrCBmngaXmOnFhrBjdjwtT54x0AbGvNwwuqyYNWwEvc7'
 access_token='1002268050513575936-gGrQUmDiMyCxO2Y88lc3ojqNzbtLGm'
@@ -32,10 +31,11 @@ auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth,wait_on_rate_limit=True)
 
 
-tweet=api.search('Messi',lang='en')
+tweet=api.search('Messi',lang='en',count=100)
 
-print(tweet[0].user.name)
-
+for i in tweet:
+    
+    
 
 
 query_word='Hiranandani'

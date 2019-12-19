@@ -15,6 +15,7 @@ import sys
 from time import sleep
 import pickle
 import os
+from textblob import TextBlob
 from math import ceil
 from pathlib import Path
 import pandas as pd
@@ -22,7 +23,7 @@ import concurrent.futures
 import psycopg2
 import GetOldTweets3 as got
 import tweepy
-start_time = time.time()
+
 consumer_key='rNrnFupaEqKt0eb7hjbdHKdWg'
 consumer_secret= 'DTTMoQOrCBmngaXmOnFhrBjdjwtT54x0AbGvNwwuqyYNWwEvc7'
 access_token='1002268050513575936-gGrQUmDiMyCxO2Y88lc3ojqNzbtLGm'
@@ -53,15 +54,6 @@ shift_move="(move mumbai flat) OR (moving mumbai flat) OR (move mumbai property)
 
 table= "keywords"
 
-#Defining tweet attributes
-id1=list()
-username1=list()
-name=list()
-location=()
-polarity=()
-created_at=list()
-text1=list()
-
 try:     
     conn = psycopg2.connect(database='Hiranandani', user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")    
 except:
@@ -77,8 +69,8 @@ if(conn):
         SELECT COUNT(*)
         FROM information_schema.tables
         WHERE table_name = '{0}'
-        """.format(table)
-    if mycursor.fetchone()[0] != 1:
+        """.format(table))
+    if mycursor.fetchone()[0]!=1:
         active.create_tweet_table(table)        
         conn.commit()
     mycursor.close()
@@ -94,27 +86,28 @@ tweet = got.manager.TweetManager.getTweets(tweetCriteria)
     
 
 for i in tweet:
-    text1 = active.deEmojify(i.text)     
-    text=active.clean_tweet(text1)
-    sentiment = TextBlob(text).sentiment
-    polarity = sentiment.polarity
-    stat=api.get_status(i.id)
-    loco=stat.user.location
-    fname=stat.
-    # Store all data in MySQL
-    if(conn):
-        mycursor = conn.cursor()
-        if 'hiranandani' not in (i.user.screen_name).lower():
-            sql = "INSERT INTO {} (id, name, username, tweet_text,created_at,location,polarity) VALUES \
+    try:
+        text1 = active.deEmojify(i.text)     
+        text=active.clean_tweet(text1)
+        sentiment = TextBlob(text).sentiment
+        polarity = sentiment.polarity
+        stat=api.get_status(i.id)
+        loco=stat.user.location
+        fname=stat.user.name
+        # Store all data in MySQL
+        if(conn):
+            mycursor = conn.cursor()
+            sql = "INSERT INTO {} (id, name, username, tweet_text, created_at, location, polarity) VALUES \
                    (%s, %s, %s, %s, %s, %s, %s)".format(table)
-            val = (i.id, i.username,i.text,i.date, loco, polarity)
+            val = (i.id, fname, i.username,i.text,i.date, loco, polarity)
             mycursor.execute(sql, val)
             
             conn.commit()
-        
+    except:
+        continue
 
 
-
-
+mycursor.close()
+conn.close()
 
 
