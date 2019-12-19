@@ -53,6 +53,8 @@ move= "(move mumbai flat) OR (moving mumbai flat) OR (move mumbai property) OR (
 shift_move="(move mumbai flat) OR (moving mumbai flat) OR (move mumbai property) OR (moving mumbai property) OR (move mumbai house) OR (moving mumbai house) OR (shift mumbai flat) OR (shifting mumbai flat) OR (shift mumbai property) OR (shifting mumbai property) OR (shift mumbai house) OR (shifting mumbai house) -packers"
 
 table= "keywords"
+count=0
+val="select id from keywords"
 
 try:     
     conn = psycopg2.connect(database='Hiranandani', user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")    
@@ -71,6 +73,7 @@ if(conn):
         WHERE table_name = '{0}'
         """.format(table))
     if mycursor.fetchone()[0]!=1:
+        count=1
         active.create_tweet_table(table)        
         conn.commit()
     mycursor.close()
@@ -83,6 +86,8 @@ tweetCriteria = got.manager.TweetCriteria().setQuerySearch(working_mumbai)\
                                            .setMaxTweets(100000)
 tweet = got.manager.TweetManager.getTweets(tweetCriteria)
 
+if count==0:
+    df=pd.read_sql(val,conn)
     
 
 for i in tweet:
