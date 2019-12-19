@@ -24,7 +24,7 @@ import psycopg2
 import GetOldTweets3 as got
 import tweepy
 
-#Workingmumbai,shift_move,apartment
+#Workingmumbai,shift_move,apartment,looking_searching
 
 consumer_key='rNrnFupaEqKt0eb7hjbdHKdWg'
 consumer_secret= 'DTTMoQOrCBmngaXmOnFhrBjdjwtT54x0AbGvNwwuqyYNWwEvc7'
@@ -39,8 +39,6 @@ working_mumbai= "(buying mumbai flat) OR (buying mumbai property) OR (buying mum
 apartment= "(looking mumbai apartment) OR (searching mumbai apartment) OR (buying mumbai apartment) OR (purchasing mumbai apartment) OR (buy mumbai apartment) OR (purchase mumbai apartment) OR (look mumbai apartment) OR (search mumbai apartment) -sale"
 #n
 query3= "(buying mumbai house) OR (buying mumbai flat) OR (buying mumbai property) OR (buying mumbai real estate) OR (purchasing mumbai house) OR (purchasing mumbai flat) OR (purchasing mumbai property) OR (purchasing real estate mumbai) OR (buy mumbai house) OR (buy mumbai flat) OR (buy mumbai property) OR (buy mumbai real estate) OR (purchase mumbai house) OR (purchase mumbai flat) OR (purchase mumbai property) OR (purchase real estate mumbai) -sale"
-
-query2=" (buying mumbai home) OR (buying mumbai house) OR (buying mumbai flat) OR (buying mumbai property) OR (buying mumbai real estate) OR (purchasing mumbai home) OR (purchasing mumbai house) OR (purchasing mumbai flat) OR (purchasing mumbai property) OR (purchasing real estate mumbai) OR (buy mumbai home) OR (buy mumbai house) OR (buy mumbai flat) OR (buy mumbai property) OR (buy mumbai real estate) OR (purchase mumbai home) OR (purchase mumbai house) OR (purchase mumbai flat) OR (purchase mumbai property) OR (purchase real estate mumbai) -sale"
 
 query_chennai= "(buying chennai flat) OR (buying chennai property) OR (buying chennai real estate) OR (purchasing chennai flat) OR (purchasing chennai property) OR (purchasing real estate chennai) OR (buy chennai flat) OR (buy chennai property) OR (buy chennai real estate) OR (purchase chennai flat) OR (purchase chennai property) OR (purchase real estate chennai) -sale"
 
@@ -84,7 +82,7 @@ if(conn):
 
 
 print("Pulling tweets.")
-tweetCriteria = got.manager.TweetCriteria().setQuerySearch(apartment)\
+tweetCriteria = got.manager.TweetCriteria().setQuerySearch(home_house)\
                                            .setSince("2019-01-01")\
                                            .setUntil("2019-12-19")\
                                            .setMaxTweets(100000)
@@ -122,11 +120,4 @@ mycursor.close()
 conn.close()
 
 
-    
-    
-    
-    
-    
-    
-    
     
