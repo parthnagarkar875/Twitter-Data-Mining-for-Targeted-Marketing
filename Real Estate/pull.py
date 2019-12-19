@@ -50,6 +50,7 @@ table= "keywords"
 count=0
 val="select id from keywords"
 a=['propert','real','sale','acre','group']
+query="select distinct id from keywords"
 
 tweet_ids=list()
 
@@ -84,8 +85,9 @@ tweetCriteria = got.manager.TweetCriteria().setQuerySearch(shift_move)\
 tweet = got.manager.TweetManager.getTweets(tweetCriteria)
         
 if count==0:
-    tweet_ids=active.get_tweet_ids(tweet)
-    
+    df=pd.read_sql(query,conn)
+    for i in df['id']:
+        tweet_ids.append(i)
 
 print("Storing tweets in database")
 for i in tweet:
