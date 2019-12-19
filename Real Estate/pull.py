@@ -4,7 +4,6 @@ Created on Wed Dec 18 17:21:46 2019
 
 @author: Parth
 """
-
 import time
 import threading
 import urllib
@@ -53,6 +52,16 @@ move= "(move mumbai flat) OR (moving mumbai flat) OR (move mumbai property) OR (
 shift_move="(move mumbai flat) OR (moving mumbai flat) OR (move mumbai property) OR (moving mumbai property) OR (move mumbai house) OR (moving mumbai house) OR (shift mumbai flat) OR (shifting mumbai flat) OR (shift mumbai property) OR (shifting mumbai property) OR (shift mumbai house) OR (shifting mumbai house) -packers"
 
 table= "keywords"
+
+#Defining tweet attributes
+id1=list()
+username1=list()
+name=list()
+location=()
+polarity=()
+created_at=list()
+text1=list()
+
 try:     
     conn = psycopg2.connect(database='Hiranandani', user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")    
 except:
@@ -76,14 +85,36 @@ if(conn):
 
 
 
-tweetCriteria = got.manager.TweetCriteria().setQuerySearch(apartment)\
+tweetCriteria = got.manager.TweetCriteria().setQuerySearch(working_mumbai)\
                                            .setSince("2019-01-01")\
                                            .setUntil("2019-12-19")\
                                            .setMaxTweets(100000)
 tweet = got.manager.TweetManager.getTweets(tweetCriteria)
 
+    
 
-pickle_file=open('apartment.pickle','wb')
-pickle.dump(tweet,pickle_file)
-pickle_file.close()
+for i in tweet:
+    text1 = active.deEmojify(i.text)     
+    text=active.clean_tweet(text1)
+    sentiment = TextBlob(text).sentiment
+    polarity = sentiment.polarity
+    stat=api.get_status(i.id)
+    loco=stat.user.location
+    fname=stat.
+    # Store all data in MySQL
+    if(conn):
+        mycursor = conn.cursor()
+        if 'hiranandani' not in (i.user.screen_name).lower():
+            sql = "INSERT INTO {} (id, name, username, tweet_text,created_at,location,polarity) VALUES \
+                   (%s, %s, %s, %s, %s, %s, %s)".format(table)
+            val = (i.id, i.username,i.text,i.date, loco, polarity)
+            mycursor.execute(sql, val)
+            
+            conn.commit()
+        
+
+
+
+
+
 
