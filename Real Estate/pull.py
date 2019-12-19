@@ -101,15 +101,16 @@ for i in tweet:
         loco=active.clean_tweet(loco1)
         fname1=active.deEmojify(i.user.name)     
         fname=active.clean_tweet(fname1)
+        if 'propert' or 'real' or 'acre' or 'sale' not in fname.lower();
         # Store all data in MySQL
-        if(conn):
-            mycursor = conn.cursor()
-            sql = "INSERT INTO {} (id, name, username, tweet_text, created_at, location, polarity) VALUES \
-                   (%s, %s, %s, %s, %s, %s, %s)".format(table)
-            val = (i.id, fname, i.username,i.text,i.date, loco, polarity)
-            mycursor.execute(sql, val)
-            
-            conn.commit()
+            if(conn):
+                mycursor = conn.cursor()
+                sql = "INSERT INTO {} (id, name, username, tweet_text, created_at, location, polarity) VALUES \
+                       (%s, %s, %s, %s, %s, %s, %s)".format(table)
+                val = (i.id, fname, i.username,i.text,i.date, loco, polarity)
+                mycursor.execute(sql, val)
+                
+                conn.commit()
     except:
         continue
 
