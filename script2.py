@@ -26,7 +26,6 @@ import tweepy
 
 table= "keywords"
 count=0
-val="select id from keywords"
 
 try:     
     conn = psycopg2.connect(database='Hiranandani', user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")    
@@ -34,26 +33,21 @@ except:
     print("Create database first")
 
 
+try:
+    fil=open('shift_move.pickle','rb')
+except:
+    print("File doesn't exist")
 
-if count==0:
-    df=pd.read_sql(val,conn)
-    
+df=pickle.load(fil)
 
-for i in tweet:
+
+for j,i in df.iterrows():
     try:
-        text1 = active.deEmojify(i.text)     
-        text=active.clean_tweet(text1)
-        sentiment = TextBlob(text).sentiment
-        polarity = sentiment.polarity
-        stat=api.get_status(i.id)
-        loco=stat.user.location
-        fname=stat.user.name
-        # Store all data in MySQL
         if(conn):
             mycursor = conn.cursor()
             sql = "INSERT INTO {} (id, name, username, tweet_text, created_at, location, polarity) VALUES \
                    (%s, %s, %s, %s, %s, %s, %s)".format(table)
-            val = (i.id, fname, i.username,i.text,i.date, loco, polarity)
+            val = (i['id'], i['name'], i['username'], i['tweet_text'], i['created_at'], i['location'], i['polarity'])
             mycursor.execute(sql, val)
             
             conn.commit()

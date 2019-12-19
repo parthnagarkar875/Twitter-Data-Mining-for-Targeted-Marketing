@@ -24,6 +24,8 @@ import psycopg2
 import GetOldTweets3 as got
 import tweepy
 
+#Workingmumbai,shift_move,apartment
+
 consumer_key='rNrnFupaEqKt0eb7hjbdHKdWg'
 consumer_secret= 'DTTMoQOrCBmngaXmOnFhrBjdjwtT54x0AbGvNwwuqyYNWwEvc7'
 access_token='1002268050513575936-gGrQUmDiMyCxO2Y88lc3ojqNzbtLGm'
@@ -58,9 +60,6 @@ val="select id from keywords"
 a=['propert','real','sale','acre','group']
 
 
-
-
-
 print("Connecting to database")
 try:     
     conn = psycopg2.connect(database='Hiranandani', user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")    
@@ -85,15 +84,13 @@ if(conn):
 
 
 print("Pulling tweets.")
-tweetCriteria = got.manager.TweetCriteria().setQuerySearch(working_mumbai)\
+tweetCriteria = got.manager.TweetCriteria().setQuerySearch(apartment)\
                                            .setSince("2019-01-01")\
                                            .setUntil("2019-12-19")\
                                            .setMaxTweets(100000)
 tweet = got.manager.TweetManager.getTweets(tweetCriteria)
+        
 
-if count==0:
-    df=pd.read_sql(val,conn)
-    
 print("Storing tweets in database")
 for i in tweet:
     try:
@@ -132,4 +129,4 @@ conn.close()
     
     
     
- 
+    
