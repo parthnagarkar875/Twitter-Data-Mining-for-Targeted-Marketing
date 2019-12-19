@@ -55,7 +55,13 @@ shift_move="(move mumbai flat) OR (moving mumbai flat) OR (move mumbai property)
 table= "keywords"
 count=0
 val="select id from keywords"
+a=['propert','real','sale','acre','group']
 
+
+
+
+
+print("Connecting to database")
 try:     
     conn = psycopg2.connect(database='Hiranandani', user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")    
 except:
@@ -76,10 +82,9 @@ if(conn):
         count=1
         active.create_tweet_table(table)        
         conn.commit()
-    mycursor.close()
 
 
-
+print("Pulling tweets.")
 tweetCriteria = got.manager.TweetCriteria().setQuerySearch(working_mumbai)\
                                            .setSince("2019-01-01")\
                                            .setUntil("2019-12-19")\
@@ -89,7 +94,7 @@ tweet = got.manager.TweetManager.getTweets(tweetCriteria)
 if count==0:
     df=pd.read_sql(val,conn)
     
-
+print("Storing tweets in database")
 for i in tweet:
     try:
         text1 = active.deEmojify(i.text)     
@@ -97,25 +102,34 @@ for i in tweet:
         sentiment = TextBlob(text).sentiment
         polarity = sentiment.polarity
         stat=api.get_status(i.id)
-        loco1=active.deEmojify(i.user.location)     
-        loco=active.clean_tweet(loco1)
-        fname1=active.deEmojify(i.user.name)     
+        loco=stat.user.location
+        fname1=active.deEmojify(stat.user.name)     
         fname=active.clean_tweet(fname1)
-        if 'propert' or 'real' or 'acre' or 'sale' not in fname.lower();
+        if any(x in fname.lower() for x in a):
         # Store all data in MySQL
+            continue    
+        else:    
             if(conn):
-                mycursor = conn.cursor()
-                sql = "INSERT INTO {} (id, name, username, tweet_text, created_at, location, polarity) VALUES \
-                       (%s, %s, %s, %s, %s, %s, %s)".format(table)
-                val = (i.id, fname, i.username,i.text,i.date, loco, polarity)
-                mycursor.execute(sql, val)
-                
-                conn.commit()
-    except:
-        continue
+                    mycursor = conn.cursor()
+                    sql = "INSERT INTO {} (id, name, username, tweet_text, created_at, location, polarity) VALUES \
+                           (%s, %s, %s, %s, %s, %s, %s)".format(table)
+                    val = (i.id, fname, i.username,i.text,i.date, loco, polarity)
+                    mycursor.execute(sql, val)
+                    
+                    conn.commit()
+    except Exception as e:
+        print(e)
 
 
 mycursor.close()
 conn.close()
 
 
+    
+    
+    
+    
+    
+    
+    
+ 
