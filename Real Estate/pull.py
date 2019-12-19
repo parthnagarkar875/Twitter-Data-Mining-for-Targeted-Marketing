@@ -97,8 +97,10 @@ for i in tweet:
         sentiment = TextBlob(text).sentiment
         polarity = sentiment.polarity
         stat=api.get_status(i.id)
-        loco=stat.user.location
-        fname=stat.user.name
+        loco1=active.deEmojify(i.user.location)     
+        loco=active.clean_tweet(loco1)
+        fname1=active.deEmojify(i.user.name)     
+        fname=active.clean_tweet(fname1)
         # Store all data in MySQL
         if(conn):
             mycursor = conn.cursor()
