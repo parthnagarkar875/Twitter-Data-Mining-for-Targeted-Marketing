@@ -15,11 +15,17 @@ from nltk.corpus import stopwords
 from collections import Counter
 import pickle 
 import string
+import numpy as np
 import pandas as pd
 from textblob import TextBlob
 import matplotlib.pyplot as plt
 from math import ceil
 import tweepy
+import plotly.express as px
+import plotly.offline as py
+import plotly.graph_objs as go
+from plotly.subplots import make_subplots
+
 
 url_list=list()
 username_list=list()
@@ -35,9 +41,9 @@ auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth,wait_on_rate_limit=True)
 
 def create_tweet_table(name):
-    conn = psycopg2.connect(database='Hiranandani', user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")
+    conn = psycopg2.connect(database=name, user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")
     cur= conn.cursor()
-    cur.execute('''CREATE TABLE {} (ID BIGINT, NAME TEXT, USERNAME TEXT, TWEET_TEXT TEXT, CREATED_AT TIMESTAMP, LOCATION TEXT,POLARITY INT);'''.format(name))
+    cur.execute('''CREATE TABLE {} (ID BIGINT, USERNAME TEXT,TWEET_TEXT TEXT, CREATED_AT TIMESTAMP, LOCATION TEXT,POLARITY INT);'''.format(name))
     conn.commit()
     conn.close()
 
@@ -101,15 +107,6 @@ def get_url_data(tweets):
     return url_list, username_list,user_profile_list
 
 
-
-def flatten(x):
-    result = []
-    for el in x:
-        if hasattr(el, "__iter__") and not isinstance(el, str):
-            result.extend(flatten(el))
-        else:
-            result.append(el)
-    return result
 
 
 def get_authorization():
@@ -221,46 +218,24 @@ def analytics(stored_tweets):
 
     return negative
 
+def tseries(df):
+    result = df.groupby([pd.Grouper(key='created_at', freq='1D'), 'polarity']).count().unstack(fill_value=0).stack().reset_index()
+    result = result.rename(columns={"id": "Num of '{}' mentions".format('Hiranandani'), "created_at":"Time in UTC"})
+    time_series = result["Time in UTC"][result['polarity']==0].reset_index(drop=True)
+    fig = px.line(result, x='Time in UTC', y="Num of '{}' mentions".format('Hiranandani'), color='polarity')
+    fig.show()
+
+
+
 #wordcloud
 def wordcloud(negative):
    # hello=[]
-    stop_words = set(stopwords.words('english')) 
-    text_tweets=list()
-    for i in negative:
-        if 'hiranandani' not in (i.user.screen_name).lower():
-            st=i.text    
-            text_tweets.append(st)
-            '''
-            word_tokens = word_tokenize(st)
-            filtered_sentence = []   
-            removetable = str.maketrans('', '', '@#%')
-            out_list = [s.translate(removetable) for s in word_tokens]
-            for w in out_list: 
-                if w not in stop_words: 
-                    filtered_sentence.append(w) 
-            x = [''.join(c for c in s if c not in string.punctuation) for s in filtered_sentence]
-            x = [s for s in x if s]
-            text_tweets.append(x)
-    for i in text_tweets:
-        if 'RT' in i:
-            i.remove('RT')
-    
-    username_set=set(username_list)
-    
-    for j in text_tweets:
-        l3 = [x for x in j if x not in username_set]
-        hello.append(l3)    
-    '''
-    finaldata={'text':pd.Series(text_tweets)}
-    df=pd.DataFrame(finaldata)
-
-    
-    content = ' '.join(df['text'])
+    content = ' '.join(negative)
     content = re.sub(r"http\S+", "", content)
     content = content.replace('RT ', ' ').replace('&amp;', 'and')
     content = re.sub('[^A-Za-z0-9]+', ' ', content)
     content = content.lower()
-
+    
     tokenized_word = word_tokenize(content)
     stop_words=set(stopwords.words("english"))
     filtered_sent=[]
@@ -268,32 +243,15 @@ def wordcloud(negative):
         if w not in stop_words:
             filtered_sent.append(w)
     fdist = FreqDist(filtered_sent)
-    fd = pd.DataFrame(fdist.most_common(13), columns = ["Word","Frequency"]).drop([0]).reindex()
+    fd = pd.DataFrame(fdist.most_common(10), columns = ["Word","Frequency"]).drop([0]).reindex()
     
-    return fd
-    
-    
-    '''
-    flat_tweets=list(flatten(hello))
-    
-    for i in flat_tweets:
-        if i.isalpha()==False:
-            flat_tweets.remove(i)
-    
-    counter=collections.Counter(flat_tweets)
-     
-    for word in list(counter):
-        if str(word).isalpha()==False:
-            del counter[word]
-            
-    c1=counter.most_common()
-    return c1
-    '''
-
-
-
-
-
-
-
+    y=fd['Frequency']
+    x=fd['Word']
+        
+    index=np.arange(len(x))
+    plt.bar(index,y)
+    plt.xlabel('Words',fontsize=10)
+    plt.ylabel('Frequency',fontsize=10)
+    plt.xticks(index,x,fontsize=10,rotation=30)
+    plt.show()
 
