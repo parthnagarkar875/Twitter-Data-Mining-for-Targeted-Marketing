@@ -12,8 +12,8 @@ import string
 import pandas as pd
 from textblob import TextBlob
 import matplotlib.pyplot as plt
-from nltk.corpus import stopwords 
-from nltk.tokenize import word_tokenize 
+#from nltk.corpus import stopwords 
+#from nltk.tokenize import word_tokenize 
 from math import ceil
 import tweepy
 import active
@@ -34,7 +34,7 @@ api = tweepy.API(auth,wait_on_rate_limit=True)
 
 tweet=api.search('Messi',lang='en')
 
-
+print(tweet[0].user.name)
 
 
 
