@@ -51,6 +51,7 @@ count=0
 val="select id from keywords"
 a=['propert','real','sale','acre','group']
 
+tweet_ids=list()
 
 print("Connecting to database")
 try:     
@@ -76,35 +77,38 @@ if(conn):
 
 
 print("Pulling tweets.")
-tweetCriteria = got.manager.TweetCriteria().setQuerySearch(home_house)\
+tweetCriteria = got.manager.TweetCriteria().setQuerySearch(shift_move)\
                                            .setSince("2019-01-01")\
                                            .setUntil("2019-12-19")\
                                            .setMaxTweets(100000)
 tweet = got.manager.TweetManager.getTweets(tweetCriteria)
         
+if count==0:
+    tweet_ids=active.get_tweet_ids(tweet)
+    
 
 print("Storing tweets in database")
 for i in tweet:
     try:
-        text1 = active.deEmojify(i.text)     
-        text=active.clean_tweet(text1)
-        sentiment = TextBlob(text).sentiment
-        polarity = sentiment.polarity
-        stat=api.get_status(i.id)
-        loco=stat.user.location
-        fname1=active.deEmojify(stat.user.name)     
-        fname=active.clean_tweet(fname1)
-        if any(x in fname.lower() for x in a):
-        # Store all data in MySQL
-            continue    
-        else:    
-            if(conn):
+        if i.id not in tweet_ids:
+            text1 = active.deEmojify(i.text)     
+            text=active.clean_tweet(text1)
+            sentiment = TextBlob(text).sentiment
+            polarity = sentiment.polarity
+            stat=api.get_status(i.id)
+            loco=stat.user.location
+            fname1=active.deEmojify(stat.user.name)     
+            fname=active.clean_tweet(fname1)
+            if any(x in fname.lower() for x in a):
+            # Store all data in MySQL
+                continue    
+            else:    
+                if(conn):
                     mycursor = conn.cursor()
                     sql = "INSERT INTO {} (id, name, username, tweet_text, created_at, location, polarity) VALUES \
-                           (%s, %s, %s, %s, %s, %s, %s)".format(table)
+                        (%s, %s, %s, %s, %s, %s, %s)".format(table)
                     val = (i.id, fname, i.username,i.text,i.date, loco, polarity)
                     mycursor.execute(sql, val)
-                    
                     conn.commit()
     except Exception as e:
         print(e)
