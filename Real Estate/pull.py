@@ -10,6 +10,7 @@ import threading
 import urllib
 import re
 import io
+import active
 import re
 import sys
 from time import sleep
@@ -39,9 +40,6 @@ query3= "(buying mumbai house) OR (buying mumbai flat) OR (buying mumbai propert
 
 query2=" (buying mumbai home) OR (buying mumbai house) OR (buying mumbai flat) OR (buying mumbai property) OR (buying mumbai real estate) OR (purchasing mumbai home) OR (purchasing mumbai house) OR (purchasing mumbai flat) OR (purchasing mumbai property) OR (purchasing real estate mumbai) OR (buy mumbai home) OR (buy mumbai house) OR (buy mumbai flat) OR (buy mumbai property) OR (buy mumbai real estate) OR (purchase mumbai home) OR (purchase mumbai house) OR (purchase mumbai flat) OR (purchase mumbai property) OR (purchase real estate mumbai) -sale"
 
-
-
-
 query_chennai= "(buying chennai flat) OR (buying chennai property) OR (buying chennai real estate) OR (purchasing chennai flat) OR (purchasing chennai property) OR (purchasing real estate chennai) OR (buy chennai flat) OR (buy chennai property) OR (buy chennai real estate) OR (purchase chennai flat) OR (purchase chennai property) OR (purchase real estate chennai) -sale"
 
 home_house= "(buying mumbai home) OR (buying mumbai house) OR (purchasing mumbai home) OR (purchasing mumbai house) OR (buy mumbai home) OR (buy mumbai house) OR (purchase mumbai home) OR (purchase mumbai house) -sale"
@@ -54,28 +52,33 @@ move= "(move mumbai flat) OR (moving mumbai flat) OR (move mumbai property) OR (
 
 shift_move="(move mumbai flat) OR (moving mumbai flat) OR (move mumbai property) OR (moving mumbai property) OR (move mumbai house) OR (moving mumbai house) OR (shift mumbai flat) OR (shifting mumbai flat) OR (shift mumbai property) OR (shifting mumbai property) OR (shift mumbai house) OR (shifting mumbai house) -packers"
 
-
-
-    
+table= "keywords"
 try:     
     conn = psycopg2.connect(database='Hiranandani', user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")    
 except:
     print("Create database first")
 
-cur= conn.cursor()
 
-
-
-def create_tweet_table(name):
-    cur.execute('''CREATE TABLE {} (ID BIGINT, USERNAME TEXT,TWEET_TEXT TEXT, CREATED_AT TIMESTAMP, LOCATION TEXT,POLARITY INT);'''.format(name))
-    conn.commit()
-    conn.close()
+if(conn):
+    '''
+    Check if this table exits. If not, then create a new one.
+    '''
+    mycursor = conn.cursor()
+    mycursor.execute("""
+        SELECT COUNT(*)
+        FROM information_schema.tables
+        WHERE table_name = '{0}'
+        """.format(table)
+    if mycursor.fetchone()[0] != 1:
+        active.create_tweet_table(table)        
+        conn.commit()
+    mycursor.close()
 
 
 
 tweetCriteria = got.manager.TweetCriteria().setQuerySearch(apartment)\
                                            .setSince("2019-01-01")\
-                                           .setUntil("2019-12-18")\
+                                           .setUntil("2019-12-19")\
                                            .setMaxTweets(100000)
 tweet = got.manager.TweetManager.getTweets(tweetCriteria)
 
