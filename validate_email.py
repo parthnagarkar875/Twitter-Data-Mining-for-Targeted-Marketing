@@ -47,6 +47,7 @@ def verify(inputAddress):
 
 list1=['amarnani.lavin@gmail.com','miral.gandhi4@gmail.com','trollavin@gmail.com','nagarkarparth2201@gmail.com','nagarkarparth@yahoo.com','kala69iyer@gmail.com','nagarkarparth22@gmail.com','harsha_nihar@yahoo.co.in']
 
+verify('muthreja@yahoo.co.in')
 
 for i in list1:
     print(i)
