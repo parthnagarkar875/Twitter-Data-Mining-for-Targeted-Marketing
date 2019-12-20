@@ -78,9 +78,9 @@ if(conn):
 
 
 print("Pulling tweets.")
-tweetCriteria = got.manager.TweetCriteria().setQuerySearch(shift_move)\
+tweetCriteria = got.manager.TweetCriteria().setQuerySearch(working_mumbai)\
                                            .setSince("2019-01-01")\
-                                           .setUntil("2019-12-19")\
+                                           .setUntil("2019-12-20")\
                                            .setMaxTweets(100000)
 tweet = got.manager.TweetManager.getTweets(tweetCriteria)
         
@@ -89,10 +89,11 @@ if count==0:
     for i in df['id']:
         tweet_ids.append(i)
 
+
 print("Storing tweets in database")
 for i in tweet:
     try:
-        if i.id not in tweet_ids:
+        if int(i.id) not in tweet_ids:
             text1 = active.deEmojify(i.text)     
             text=active.clean_tweet(text1)
             sentiment = TextBlob(text).sentiment

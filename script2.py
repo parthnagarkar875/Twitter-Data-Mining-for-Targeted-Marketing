@@ -27,35 +27,29 @@ import tweepy
 table= "keywords"
 count=0
 
+query="SELECT distinct id, name, username, tweet_text, created_at, location, polarity FROM public.keywords"
+
 try:     
     conn = psycopg2.connect(database='Hiranandani', user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")    
 except:
     print("Create database first")
 
 
-try:
-    fil=open('looking_searching.pickle','rb')
-except:
-    print("File doesn't exist")
+df=pd.read_sql(query,conn)
 
-df=pickle.load(fil)
+
+
+mycursor = conn.cursor()
 
 
 for j,i in df.iterrows():
-    try:
-        if(conn):
-            mycursor = conn.cursor()
-            sql = "INSERT INTO {} (id, name, username, tweet_text, created_at, location, polarity) VALUES \
-                   (%s, %s, %s, %s, %s, %s, %s)".format(table)
-            val = (i['id'], i['name'], i['username'], i['tweet_text'], i['created_at'], i['location'], i['polarity'])
-            mycursor.execute(sql, val)
-            
-            conn.commit()
-    except:
-        continue
+    sql = "INSERT INTO {} (id, name, username, tweet_text, created_at, location, polarity) VALUES \
+        (%s, %s, %s, %s, %s, %s, %s)".format(table)
+    val = (i['id'], i['name'],i['username'],i['tweet_text'], i['created_at'], i['location'],i['polarity'])
+    mycursor.execute(sql, val)
+    conn.commit()
 
 
-mycursor.close()
 conn.close()
 
 
