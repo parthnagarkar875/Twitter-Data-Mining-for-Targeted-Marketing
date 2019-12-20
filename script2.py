@@ -5,8 +5,8 @@ import dns.resolver
 
 def verify(inputAddress):
     fromAddress= 'abc@gmail.com'
-    regex='^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$'
-    
+    regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
+
     addressToVerify= str(inputAddress)
     
     match=re.match(regex,addressToVerify)
@@ -38,6 +38,7 @@ def verify(inputAddress):
         print("Bad")
     
 
+list1=['amarnani.lavin@gmail.com','miral.gandhi4@gmail.com','trollavin@gmail.com','nagarkarparth2201@gmail.com','nagarkarparth@yahoo.com','kala69iyer@gmail.com','nagarkarparth22@gmail.com','harsha_nihar@yahoo.co.in']
 
 
 for i in list1:

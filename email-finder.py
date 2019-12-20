@@ -135,5 +135,17 @@ for i in notdrca:
 
 
 try:
+    h=open('emails.pickle','wb')
+except Exception as e:
+    print(e)
     
-except:
+pickle.dump(email_list,h)
+
+
+
+regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
+
+match=re.match(regex,'harsha_nihar@yahoon')
+if match==None:
+    print(match)
+
