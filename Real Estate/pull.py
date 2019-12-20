@@ -78,7 +78,7 @@ if(conn):
 
 
 print("Pulling tweets.")
-tweetCriteria = got.manager.TweetCriteria().setQuerySearch(working_mumbai)\
+tweetCriteria = got.manager.TweetCriteria().setQuerySearch(home_house)\
                                            .setSince("2019-01-01")\
                                            .setUntil("2019-12-20")\
                                            .setMaxTweets(100000)
