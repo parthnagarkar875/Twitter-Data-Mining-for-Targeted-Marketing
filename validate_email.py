@@ -10,6 +10,7 @@ import re
 import smtplib
 import dns.resolver
 import time
+import psycopg2
 start_time = time.time()
 
 print("Connecting to database")
@@ -18,51 +19,53 @@ try:
 except:
     print("Create database first")
 
-myCursor=conn.cursor()
+mycursor=conn.cursor()
 
 table='emails'
 
 def verify(emails):
     valid_emails=list()
     for inputAddress in emails:
-        fromAddress= 'abc@gmail.com'
-        regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
-    
-        addressToVerify= str(inputAddress)
+        try:
+            fromAddress= 'abc@gmail.com'
+            regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
         
-        match=re.match(regex,addressToVerify)
-        
-        if match==None:
-            print('Bad syntax')
-            raise ValueError("Bad syntax")
+            addressToVerify= str(inputAddress)
             
-        splitAddress= addressToVerify.split('@')
-        domain=str(splitAddress[1])
-        
-        records= dns.resolver.query(domain,'MX')
-        mxRecord= records[0].exchange
-        mxRecord= str(mxRecord)
-        
-        server=smtplib.SMTP()
-        server.set_debuglevel(0)
-        
-        server.connect(mxRecord)
-        server.helo(server.local_hostname)
-        server.mail(fromAddress)
-        code,message =server.rcpt(str(addressToVerify))
-        server.quit()
-        
-        if code==250:
-            valid_emails.append(inputAddress)
-            print(inputAddress)
-            print("Success")
-            sql = "INSERT INTO {} (valid) VALUES \
-                        (%s)".format(table)
-            val = (inputAddress)
-            mycursor.execute(sql, val)
-            conn.commit()
-        else:
-            print("Bad")
+            match=re.match(regex,addressToVerify)
+            
+            if match==None:
+                print('Bad syntax')
+                raise ValueError("Bad syntax")
+                
+            splitAddress= addressToVerify.split('@')
+            domain=str(splitAddress[1])
+            
+            records= dns.resolver.query(domain,'MX')
+            mxRecord= records[0].exchange
+            mxRecord= str(mxRecord)
+            
+            server=smtplib.SMTP()
+            server.set_debuglevel(0)
+            
+            server.connect(mxRecord)
+            server.helo(server.local_hostname)
+            server.mail(fromAddress)
+            code,message =server.rcpt(str(addressToVerify))
+            server.quit()
+            
+            if code==250:
+                valid_emails.append(inputAddress)
+                print(inputAddress)
+                print("Success")
+                sql = "INSERT INTO 'emails' (valid) VALUES (%s)"
+                val = (str(addressToVerify))
+                mycursor.execute(sql, val)
+                conn.commit()
+            else:
+                print("Bad")
+        except Exception as e:
+            print(e)
    # return valid_emails
 
 with open('emails.pickle', 'rb') as f:
@@ -72,6 +75,7 @@ with open('emails.pickle', 'rb') as f:
 verify(emails)
 print("--- %s seconds ---" % (time.time() - start_time))
 
+conn.close()
 '''
 with concurrent.futures.ThreadPoolExecutor(4) as executor:
     future = executor.submit(verify, emails[:12])
