@@ -29,7 +29,6 @@ def formats(first, middle, last, domain):
         list.append(first[0] + last + '@' + domain)          # flast@example.com
         list.append(first[0] + '.' + last + '@' + domain)    # f.last@example.com
         list.append(first[0] + '_' + last + '@' + domain)    # f_last@example.com
-        list.append(first[0] + '-' + last + '@' + domain)    # f-last@example.com
         list.append(first + '@' + domain)                    # first@example.com
         list.append(first + last + '@' + domain)             # firstlast@example.com
         list.append(first + '.' + last + '@' + domain)       # first.last@example.com
@@ -39,42 +38,33 @@ def formats(first, middle, last, domain):
         list.append(first + last[0] + '@' + domain)          # fistl@example.com
         list.append(first + '.' + last[0] + '@' + domain)    # first.l@example.com
         list.append(first + '_' + last[0] + '@' + domain)    # fist_l@example.com
-        list.append(first + '-' + last[0] + '@' + domain)    # fist-l@example.com
         
         list.append(first[0] + middle + last + '@' + domain)          # fmiddlelast@example.com
         list.append(first[0] + '.' + middle + last + '@' + domain)    # f.middlelast@example.com
         list.append(first[0] + middle + '.' + last + '@' + domain)    # fmiddle.last@example.com
         list.append(first[0] + '_' + middle+ last + '@' + domain)    # f_middlelast@example.com
         list.append(first[0] + middle +'_' + last + '@' + domain)    # fmiddle_last@example.com
-        list.append(first[0] + middle+'-' + last + '@' + domain)    # fmiddle-last@example.com
-        list.append(first[0] + '-' + middle+ last + '@' + domain)    # fmiddle-last@example.com
         list.append(first + middle+ last + '@' + domain)             # firstmiddlelast@example.com
         list.append(first + middle + '.' + last + '@' + domain)       # firstmiddle.last@example.com
         list.append(first + '.' + middle + last + '@' + domain)       # first.middlelast@example.com
         list.append(first + '_' + middle + last + '@' + domain)       # first_last@example.com
         list.append(first + middle + '_' + last + '@' + domain)       # first_last@example.com
-        list.append(first + '-' + middle + last + '@' + domain)       # first-middlelast@example.com
-        list.append(first + middle +'-' + last + '@' + domain)       # firstmiddle-last@example.com
         list.append(first + middle+ last[0] + '@' + domain)          # firstmiddlel@example.com
         list.append(first + '.' + middle +last[0] + '@' + domain)    # first.middlel@example.com
         list.append(first + middle + '.' +last[0] + '@' + domain)    # firstmiddle.l@example.com
         list.append(first + '_' + middle +last[0] + '@' + domain)    # first_middlel@example.com
         list.append(first + middle +'_' + last[0] + '@' + domain)    # firstmiddle_l@example.com        
-        list.append(first + '-' +middle+ last[0] + '@' + domain)    # fist-middlel@example.com
-        list.append(first + middle + '-' + last[0] + '@' + domain)    # fistmiddle-l@example.com
-    
+       
         list.append(last + '@' + domain)                     # last@example.com
         list.append(last + first+ '@' + domain)              # lastfirst@example.com
         list.append(last + '.' + first + '@' + domain)       # last.first@example.com
         list.append(last + '_' + first + '@' + domain)       # last_first@example.com
-        list.append(last + '-' + first + '@' + domain)       # last-first@example.com
         list.append(last[0] + '.' + first + '@' + domain)    # l.first@example.com    
         list.append(last[0] + first + '@' + domain)          # lfirst@example.com
         list.append(last + first[0] + '@' + domain)          # lastf@example.com
         list.append(last + '.' + first[0] + '@' + domain)    # last.f@example.com
         list.append(last + '_' + first[0] + '@' + domain)    # last_f@example.com
-        list.append(last + '-' + first[0] + '@' + domain)    # last-f@example.com
-
+       
     return(list)
 
 
