@@ -9,6 +9,18 @@ import pickle
 import re
 import smtplib
 import dns.resolver
+import time
+start_time = time.time()
+
+print("Connecting to database")
+try:     
+    conn = psycopg2.connect(database='Hiranandani', user = "postgres", password = "parth123n@#*", host = "127.0.0.1", port = "5432")    
+except:
+    print("Create database first")
+
+myCursor=conn.cursor()
+
+table='emails'
 
 def verify(emails):
     valid_emails=list()
@@ -26,7 +38,6 @@ def verify(emails):
             
         splitAddress= addressToVerify.split('@')
         domain=str(splitAddress[1])
-        print("Domain:", domain)
         
         records= dns.resolver.query(domain,'MX')
         mxRecord= records[0].exchange
@@ -45,16 +56,24 @@ def verify(emails):
             valid_emails.append(inputAddress)
             print(inputAddress)
             print("Success")
+            sql = "INSERT INTO {} (valid) VALUES \
+                        (%s)".format(table)
+            val = (inputAddress)
+            mycursor.execute(sql, val)
+            conn.commit()
         else:
             print("Bad")
-    return valid_emails
+   # return valid_emails
 
 with open('emails.pickle', 'rb') as f:
     emails = pickle.load(f)
 
 
+verify(emails)
+print("--- %s seconds ---" % (time.time() - start_time))
 
-with concurrent.futures.ThreadPoolExecutor(8) as executor:
-    future = executor.submit(verify, emails)
+'''
+with concurrent.futures.ThreadPoolExecutor(4) as executor:
+    future = executor.submit(verify, emails[:12])
     return_value = future.result()
-
+'''
