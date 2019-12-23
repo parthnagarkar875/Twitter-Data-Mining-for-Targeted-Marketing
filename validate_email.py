@@ -23,49 +23,49 @@ mycursor=conn.cursor()
 
 table='emails'
 
-def verify(emails):
+def verify(inputAddress):
     valid_emails=list()
-    for inputAddress in emails:
-        try:
-            fromAddress= 'abc@gmail.com'
-            regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
+#    for inputAddress in emails:
+    try:
+        fromAddress= 'abc@gmail.com'
+        regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
         
-            addressToVerify= str(inputAddress)
+        addressToVerify= str(inputAddress)
+        
+        match=re.match(regex,addressToVerify)
+        
+        if match==None:
+            print('Bad syntax')
+            raise ValueError("Bad syntax")
             
-            match=re.match(regex,addressToVerify)
-            
-            if match==None:
-                print('Bad syntax')
-                raise ValueError("Bad syntax")
-                
-            splitAddress= addressToVerify.split('@')
-            domain=str(splitAddress[1])
-            
-            records= dns.resolver.query(domain,'MX')
-            mxRecord= records[0].exchange
-            mxRecord= str(mxRecord)
-            
-            server=smtplib.SMTP()
-            server.set_debuglevel(0)
-            
-            server.connect(mxRecord)
-            server.helo(server.local_hostname)
-            server.mail(fromAddress)
-            code,message =server.rcpt(str(addressToVerify))
-            server.quit()
-            
-            if code==250:
-                valid_emails.append(inputAddress)
-                print(inputAddress)
-                print("Success")
-                sql = "INSERT INTO 'emails' (valid) VALUES (%s)"
-                val = (str(addressToVerify))
-                mycursor.execute(sql, val)
-                conn.commit()
-            else:
-                print("Bad")
-        except Exception as e:
-            print(e)
+        splitAddress= addressToVerify.split('@')
+        domain=str(splitAddress[1])
+        
+        records= dns.resolver.query(domain,'MX')
+        mxRecord= records[0].exchange
+        mxRecord= str(mxRecord)
+        
+        server=smtplib.SMTP()
+        server.set_debuglevel(0)
+        
+        server.connect(mxRecord)
+        server.helo(server.local_hostname)
+        server.mail(fromAddress)
+        code,message =server.rcpt(str(addressToVerify))
+        server.quit()
+        
+        if code==250:
+            valid_emails.append(inputAddress)
+            print(inputAddress)
+            print("Success")
+            #sql = "INSERT INTO 'emails' (valid) VALUES (%s)"
+            #val = (str(addressToVerify))
+            #mycursor.execute(sql, val)
+            #conn.commit()
+        else:
+            print("Bad")
+    except Exception as e:
+        print(e)
    # return valid_emails
 
 with open('emails.pickle', 'rb') as f:
@@ -74,6 +74,8 @@ with open('emails.pickle', 'rb') as f:
 
 verify(emails)
 print("--- %s seconds ---" % (time.time() - start_time))
+
+verify('nagaarkarparth@gmail.com')
 
 conn.close()
 '''
