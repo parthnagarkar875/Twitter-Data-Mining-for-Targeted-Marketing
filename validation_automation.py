@@ -4,7 +4,7 @@ Created on Tue Dec 24 16:23:32 2019
 
 @author: Parth
 """
-'''
+
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from time import sleep, strftime
@@ -46,7 +46,6 @@ for i in emails:
         print("No")
 
 '''
-
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from time import sleep, strftime
@@ -88,5 +87,6 @@ sleep(5)
 
 
 
+'''
 
 
