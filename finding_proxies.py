@@ -24,7 +24,6 @@ socks_verifier =  Verifier(
 )
 results = socks_verifier.verify('myemail@example.com')
 
-
 import urllib3
 proxy = urllib3.ProxyManager('http://209.90.63.108:80')
 h=proxy.request('GET', 'https://httpbin.org/ip')
