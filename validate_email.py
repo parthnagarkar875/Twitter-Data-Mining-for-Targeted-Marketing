@@ -75,7 +75,7 @@ with open('emails.pickle', 'rb') as f:
 verify(emails)
 print("--- %s seconds ---" % (time.time() - start_time))
 
-verify('nagaarkarparth@gmail.com')
+verify('nagarkarparth@gmail.com')
 
 conn.close()
 '''
