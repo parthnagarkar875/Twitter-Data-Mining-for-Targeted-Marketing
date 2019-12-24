@@ -1,13 +1,13 @@
-'''
 import requests
 url = 'https://httpbin.org/ip'
 proxies = {
     "http": 'http://209.90.63.108:80', 
     "https": 'http://209.90.63.108:80'
 }
-response = requests.get(url,proxies=proxies)
+response = requests.get(url)
 print(response.json())
 
+'''
 
 from verifier import Verifier
 # Use normal SMTP to connect to the server
