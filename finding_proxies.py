@@ -48,6 +48,5 @@ try:
    print("Successfully sent email")
 except Exception as e:
    print(e)
-   
-   
 '''
+
