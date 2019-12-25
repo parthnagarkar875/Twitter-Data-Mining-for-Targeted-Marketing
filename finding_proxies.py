@@ -7,6 +7,26 @@ proxies = {
 response = requests.get(url)
 print(response.json())
 
+
+
+import requests
+import socks
+import socket
+#s = socks.socksocket() # Same API as socket.socket in the standard lib
+socks.set_default_proxy(socks.SOCKS4, "168.232.152.99",4145)
+socket.socket = socks.socksocket
+
+#s.set_proxy(socks.SOCKS5, "168.232.152.99",4145)
+
+url = 'https://httpbin.org/ip'
+proxies = {
+    "http": 'http://190.186.59.22:52335', 
+    "https": 'http://190.186.59.22:52335'
+}
+response = requests.get(url)
+print(response.json())
+
+
 '''
 
 from verifier import Verifier
