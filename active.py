@@ -243,7 +243,7 @@ def wordcloud(negative):
         if w not in stop_words:
             filtered_sent.append(w)
     fdist = FreqDist(filtered_sent)
-    fd = pd.DataFrame(fdist.most_common(20), columns = ["Word","Frequency"]).drop([0]).reindex()
+    fd = pd.DataFrame(fdist.most_common(5), columns = ["Word","Frequency"]).drop([0]).reindex()
     
     y=fd['Frequency']
     x=fd['Word']
