@@ -13,7 +13,7 @@ import requests
 import socks
 import socket
 #s = socks.socksocket() # Same API as socket.socket in the standard lib
-socks.set_default_proxy(socks.SOCKS4, "75.119.203.63",12747)
+socks.set_default_proxy(socks.SOCKS4, "169.61.54.42",10064)
 socket.socket = socks.socksocket
 
 #s.set_proxy(socks.SOCKS5, "168.232.152.99",4145)
@@ -28,7 +28,6 @@ print(response.json())
 
 
 '''
-
 from verifier import Verifier
 # Use normal SMTP to connect to the server
 normal_verifier = Verifier(source_addr='user@example.com') # No proxy

@@ -64,8 +64,8 @@ def verify(emails):
                 #conn.commit()
             else:
                 print("Bad")
-        # except Exception as e:
-            #    print(e)
+        except Exception as e:
+            print(e)
            # return valid_emails
 
 with open('emails.pickle', 'rb') as f:
