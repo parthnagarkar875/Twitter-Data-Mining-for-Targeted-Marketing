@@ -12,6 +12,7 @@ import dns.resolver
 import time
 import psycopg2
 start_time = time.time()
+
 '''
 print("Connecting to database")
 try:     
@@ -47,13 +48,13 @@ def verify(emails):
              
             server=smtplib.SMTP()
             server.set_debuglevel(0)
-             
+            
             server.connect(mxRecord)
             server.helo(server.local_hostname)
             server.mail(fromAddress)
             code,message =server.rcpt(str(addressToVerify))
             server.quit()
-             
+            
             if code==250:
                 valid_emails.append(inputAddress)
                 print(inputAddress)
@@ -71,7 +72,7 @@ def verify(emails):
 with open('emails.pickle', 'rb') as f:
     emails = pickle.load(f)
 
-
+emails=['nagarkarparth69123@hotmail.com',"nagarkarparth2201@yahoo.com","nagarkarparth@yahoo.co.in","kala69iyer@gmail.com","nagarkarparth@yahoo.com","harsha_nihar@yahoo.co.in"]
 verify(emails)
 print("--- %s seconds ---" % (time.time() - start_time))
 

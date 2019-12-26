@@ -13,7 +13,7 @@ import requests
 import socks
 import socket
 #s = socks.socksocket() # Same API as socket.socket in the standard lib
-socks.set_default_proxy(socks.SOCKS4, "169.61.54.42",10064)
+socks.set_default_proxy(socks.SOCKS4, "197.234.13.36",4145)
 socket.socket = socks.socksocket
 
 #s.set_proxy(socks.SOCKS5, "168.232.152.99",4145)
