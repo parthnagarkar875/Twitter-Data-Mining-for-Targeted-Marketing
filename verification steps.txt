@@ -1,0 +1,16 @@
+Step 1: Email Address Syntax Check
+
+Step 2: Domain/MX Records Check
+
+Step 3: Role-Based Account Detection
+
+Step 4: Disposable Email Address (DEA) Detection
+
+Step 5: Honeypot/ Spam Trap Detection
+
+Step 6: Checking DNSBLs and URI DNSBLs for blacklisting
+
+Step 7: Risk assessment
+
+Step 8: Final SMTP Verification
+
