@@ -1,51 +1,56 @@
-import concurrent.futures 
-import pickle
-import re
-import smtplib
-import dns.resolver
-import time
-import psycopg2
+import os
+from nltk.tag import StanfordNERTagger
+import pandas as pd
+from nltk.tag import StanfordNERTagger
+from nltk.tokenize import word_tokenize
+import GetOldTweets3 as got
+import active
+from textblob import TextBlob
 
-inputAddress='nagarkarparth@gmail.com'
-fromAddress= 'abc@gmail.com'
-regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
- 
-addressToVerify= str(inputAddress)
- 
-match=re.match(regex,addressToVerify)
- 
-if match==None:
-    print('Bad syntax')
-    raise ValueError("Bad syntax")
-    
-splitAddress= addressToVerify.split('@')
-domain=str(splitAddress[1])
+tweetCriteria = got.manager.TweetCriteria().setUsername("@N_Hiranandani").setMaxTweets(1000)
+tweet = got.manager.TweetManager.getTweets(tweetCriteria)
+nounlist=list()
+clean=list()
+for i in tweet:
+    try:
+        text1 = active.deEmojify(i.text) 
+        text=active.clean_tweet(text1)
+        clean.append(text)
+        blob = TextBlob(text)
+        for nouns in blob.noun_phrases:
+            nounlist.append(nouns)
+    except:
+        continue
+li1=pd.Series(nounlist)
 
-records= dns.resolver.query(domain,'MX')
-for i in records:    
-    print("The records are: ",i.exchange)
+active.wordcloud(li1)
 
-mxRecord= records[0].exchange
-print("The MX record is: ",mxRecord)
+#st = StanfordNERTagger('C:/Users/Parth/Contacts/Downloads/stanford-ner-2015-04-20/stanford-corenlp-full-2018-10-05/stanford-corenlp-full-2018-10-05/edu/stanford/nlp/models/ner/english.all.3class.distsim.crf.ser.gz','C:/Users/Parth/Contacts/Downloads/stanford-ner-2015-04-20/stanford-ner.jar',encoding='utf-8')
 
-mxRecord= str(mxRecord)
- 
-server=smtplib.SMTP()
-server.set_debuglevel(0)
+#Set environmental variables programmatically.
+#Set the classpath to the path where the jar file is located
+os.environ['CLASSPATH'] = "C:/Users/Parth/Contacts/Downloads/stanford-ner-2015-04-20/stanford-ner.jar"
 
-server.connect(mxRecord)
-server.helo(server.local_hostname)
-server.mail(fromAddress)
-code,message =server.rcpt(str(addressToVerify))
-server.quit()
+#Set the Stanford models to the path where the models are stored
+os.environ['STANFORD_MODELS'] = 'C:/Users/Parth/Contacts/Downloads/stanford-ner-2015-04-20/stanford-corenlp-full-2018-10-05/stanford-corenlp-full-2018-10-05/edu/stanford/nlp/models/ner'
 
-if code==250:
-   # valid_emails.append(inputAddress)
-    print(inputAddress)
-    print("Success")
-    #sql = "INSERT INTO 'emails' (valid) VALUES (%s)"
-    #val = (str(addressToVerify))
-    #mycursor.execute(sql, val)
-    #conn.commit()
-else:
-    print("Bad")
+#Set the java jdk path
+
+java_path = "C:/Program Files/Java/jdk1.8.0_131/bin/java.exe"
+os.environ['JAVAHOME'] = java_path
+
+
+#Set the path to the model that you would like to use
+stanford_classifier  =  'C:/Users/Parth/Contacts/Downloads/stanford-ner-2015-04-20/stanford-corenlp-full-2018-10-05/stanford-corenlp-full-2018-10-05/edu/stanford/nlp/models/ner/english.all.3class.distsim.crf.ser.gz'
+
+#Build NER tagger object
+st = StanfordNERTagger(stanford_classifier)
+
+tokenized_text = word_tokenize(text)
+classified_text = st.tag(tokenized_text)
+
+is_noun = lambda pos: pos[:3] == 'ORG'
+nouns = [word for (word, pos) in classified_text if is_noun(pos)] 
+print(nouns)
+noun=pd.Series(nouns)
+active.wordcloud(noun)
