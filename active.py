@@ -247,7 +247,7 @@ def wordcloud(negative):
     
     y=fd['Frequency']
     x=fd['Word']
-    print(fd)
+#    print(fd)
     index=np.arange(len(x))
     fig=plt.figure(figsize=(10,10))
     plt.bar(index,y)
