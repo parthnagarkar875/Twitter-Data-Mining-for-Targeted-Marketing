@@ -49,7 +49,9 @@ text='While in France, Christine Lagarde discussed short-term stimulus efforts i
 tokenized_text = word_tokenize(text)
 classified_text = st.tag(tokenized_text)
 
-is_noun = lambda pos: pos[:3] == 'ORG'
+li=['ORG','PER','LOC']
+
+is_noun = lambda pos: pos[:3] in li 
 nouns = [word for (word, pos) in classified_text if is_noun(pos)] 
 print(nouns)
 noun=pd.Series(nouns)
