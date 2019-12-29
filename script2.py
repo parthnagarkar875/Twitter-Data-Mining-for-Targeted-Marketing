@@ -7,7 +7,7 @@ import GetOldTweets3 as got
 import active
 from textblob import TextBlob
 
-tweetCriteria = got.manager.TweetCriteria().setUsername("@N_Hiranandani").setMaxTweets(1000)
+tweetCriteria = got.manager.TweetCriteria().setUsername("@N_Hiranandani").setMaxTweets(10)
 tweet = got.manager.TweetManager.getTweets(tweetCriteria)
 nounlist=list()
 clean=list()
@@ -45,7 +45,7 @@ stanford_classifier  =  'C:/Users/Parth/Contacts/Downloads/stanford-ner-2015-04-
 
 #Build NER tagger object
 st = StanfordNERTagger(stanford_classifier)
-
+text='While in France, Christine Lagarde discussed short-term stimulus efforts in a recent interview with the Wall Street Journal.'
 tokenized_text = word_tokenize(text)
 classified_text = st.tag(tokenized_text)
 
