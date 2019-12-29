@@ -25,6 +25,11 @@ li1=pd.Series(nounlist)
 
 active.wordcloud(li1)
 
+print(tweet[0].text)
+print(tweet[0].date)
+
+
+
 #st = StanfordNERTagger('C:/Users/Parth/Contacts/Downloads/stanford-ner-2015-04-20/stanford-corenlp-full-2018-10-05/stanford-corenlp-full-2018-10-05/edu/stanford/nlp/models/ner/english.all.3class.distsim.crf.ser.gz','C:/Users/Parth/Contacts/Downloads/stanford-ner-2015-04-20/stanford-ner.jar',encoding='utf-8')
 
 #Set environmental variables programmatically.
