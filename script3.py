@@ -29,4 +29,8 @@ api = tweepy.API(auth,wait_on_rate_limit=True)
 
 tweets=api.user_timeline('N_Hiranandani')
 
+stat=api.get_status(tweets[0].id)
+print(stat.id)
+
+hello=api.favorites(1211286922431213568)
 
