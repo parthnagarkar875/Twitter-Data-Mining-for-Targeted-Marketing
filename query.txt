@@ -1,3 +1,5 @@
+
+Slot1: 
 (buying mumbai flat) OR 
 (buying mumbai property) OR 
 (buying mumbai real estate) OR 
@@ -59,26 +61,73 @@ Ads
 News
 
 
-
 New queries:
-Home decor mumbai OR 
-Home Loan mumbai OR 
-Furniture OR 
-property for sale OR 
-home for sale OR 
-estate agents OR
-best builders mumbai OR 
-realtor mumbai OR 
-sell home mumbai OR 
-sell property mumbai OR 
-sell house mumbai OR 
-sell flat mumbai OR 
-interior designer OR 
-house for sale OR 
-flat for sale OR
-home appliance OR 
-vastu OR
-home decorator
+
+
+Slot2: 
+J1:
+(Home decor mumbai) OR 
+(Home Loan mumbai) OR 
+(Furniture mumbai) OR 
+(property for sale mumbai) OR 
+(home for sale mumbai) OR 
+(estate agents mumbai) OR
+(best builders mumbai) OR 
+(realtor mumbai) OR 
+
+J2:
+(sell home mumbai) OR 
+(sell property mumbai) OR 
+(sell house mumbai) OR 
+(sell flat mumbai) OR 
+(interior designer mumbai) OR 
+(house for sale mumbai) OR 
+(flat for sale mumbai) OR
+(home appliance mumbai) OR 
+(vastu mumbai) OR
+(home decorator mumbai)
+
+the above data is to be multipled by 3 to get thane, navi mumbai and mumbai. 
+
+
+Slot3: 
+J3:
+interior decorator
+new ac purchase 
+fridge,tv,etc. 
+property portal names 99acres,housing, magicbricks,etc. 
+luxury homes, modern homes, spacious homes
+clubhouse facility, gym facility, townships builders
+premium builders in mumbai, vashi, etc. 
+latest constructions and its iterations.(development, fast constructions,etc) 
+quality builders
+
+
+
+
+
+
+top 20 international travel destinations for mumbaikars.
+
+brand names: mercedez, audi, bmw, volvo,lexus, toyota fortuner.
+
+premium watch brands: charles and keith, tissot, giordano, rado, tommy hilfiger,diesel.
+
+Premium residential localities: Bandra, khar, mahalaxmi and south bombay, worli, vashi, powai,andheri, lokhandwala.
+
+device names (posted from)
+
+expensive hotel names: taj, marriot, etc.  
+
+
+
+
+
+
+
+
+
+
 
 
 
