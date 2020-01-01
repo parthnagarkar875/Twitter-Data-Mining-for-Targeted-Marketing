@@ -37,7 +37,7 @@
 (buying mumbai apartment) OR 
 (purchasing mumbai apartment) OR 
 (buy mumbai apartment) OR 
-(purchase mumbai apartment) OR
+(purchase mumbai apartment) 
 
 Irrelevant:
 (book mumbai flat) OR 
@@ -57,3 +57,29 @@ Requests
 Jokes
 Ads
 News
+
+
+
+New queries:
+Home decor mumbai OR 
+Home Loan mumbai OR 
+Furniture OR 
+property for sale OR 
+home for sale OR 
+estate agents OR
+best builders mumbai OR 
+realtor mumbai OR 
+sell home mumbai OR 
+sell property mumbai OR 
+sell house mumbai OR 
+sell flat mumbai OR 
+interior designer OR 
+house for sale OR 
+flat for sale OR
+home appliance OR 
+vastu OR
+home decorator
+
+
+
+
