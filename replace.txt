@@ -1,9 +1,10 @@
-(Home decor thane) OR 
-(Home Loan thane) OR 
-(Furniture thane) OR 
-(property for sale thane) OR 
-(home for sale thane) OR 
-(estate agents thane) OR
-(best builders thane) OR 
-(realtor thane)  
-
+(sell home thane) OR 
+(sell property thane) OR 
+(sell house thane) OR 
+(sell flat thane) OR 
+(interior designer thane) OR 
+(house for sale thane) OR 
+(flat for sale thane) OR
+(home appliance thane) OR 
+(vastu thane) OR
+(home decorator thane)
