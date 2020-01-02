@@ -1,10 +1,20 @@
-(sell home thane) OR 
-(sell property thane) OR 
-(sell house thane) OR 
-(sell flat thane) OR 
-(interior designer thane) OR 
-(house for sale thane) OR 
-(flat for sale thane) OR
-(home appliance thane) OR 
-(vastu thane) OR
-(home decorator thane)
+(interior decorator thane) OR 
+(ac purchase thane) OR 
+(tv purchase thane) OR
+(99acres thane) OR
+(housing.com thane) OR
+(magicbricks thane) OR
+(nobroker thane)
+
+
+(luxury homes thane) OR
+(modern homes thane) OR 
+(spacious homes thane) OR
+(clubhouse facilit thane) OR
+(gym facilit thane) OR 
+(township buidler thane) OR
+(premium builders in thane) OR
+(latest constructions thane) OR 
+(latest development thane) OR
+(fast construction thane) OR
+(quality builder thane) 
