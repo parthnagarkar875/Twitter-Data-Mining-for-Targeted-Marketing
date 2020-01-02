@@ -1,20 +1,20 @@
-(interior decorator thane) OR 
-(ac purchase thane) OR 
-(tv purchase thane) OR
-(99acres thane) OR
-(housing.com thane) OR
-(magicbricks thane) OR
-(nobroker thane)
+(interior decorator mumbai) OR 
+(ac purchase mumbai) OR 
+(tv purchase mumbai) OR
+(99acres mumbai) OR
+(housing.com mumbai) OR
+(magicbricks mumbai) OR
+(nobroker mumbai)
 
 
-(luxury homes thane) OR
-(modern homes thane) OR 
-(spacious homes thane) OR
-(clubhouse facilit thane) OR
-(gym facilit thane) OR 
-(township buidler thane) OR
-(premium builders in thane) OR
-(latest constructions thane) OR 
-(latest development thane) OR
-(fast construction thane) OR
-(quality builder thane) 
+(luxury homes mumbai) OR
+(modern homes mumbai) OR 
+(spacious homes mumbai) OR
+(clubhouse facilit mumbai) OR
+(gym facilit mumbai) OR 
+(township buidler mumbai) OR
+(premium builders in mumbai) OR
+(latest constructions mumbai) OR 
+(latest development mumbai) OR
+(fast construction mumbai) OR
+(quality builder mumbai) 
