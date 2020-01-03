@@ -16,7 +16,7 @@ def formats(first, middle, last, domain):
     """
     Create a list of 30 possible email formats combining:
     - First name:          [empty] | Full | Initial |
-    - Delimitator:         [empty] |   .  |    _    |    -
+    - Delimeter:         [empty] |   .  |    _    |    -
     - Last name:           [empty] | Full | Initial |
     """
     list = []
@@ -109,13 +109,13 @@ for i in notdrca:
         s=i.split()
 
         if len(s)==2:
-            email_list.extend(formats(s[0],s[1],'','hotmail.com'))
+            email_list.extend(formats(s[0],s[1],'','gmail.com'))
             len2.append(i)
         elif len(s)==1:
             email_list.extend(formats(s[0],'','','gmail.com'))        
             l1.append(i)
         elif len(s)==3:
-            email_list.extend(formats(s[0],s[1],s[2],'yahoo.com'))    
+            email_list.extend(formats(s[0],s[1],s[2],'gmail.com'))    
             l3.append(i)
         elif len(s)>3:
             ln.append(i)
