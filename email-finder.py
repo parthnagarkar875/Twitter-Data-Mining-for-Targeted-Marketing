@@ -112,10 +112,10 @@ for i in notdrca:
             email_list.extend(formats(s[0],s[1],'','hotmail.com'))
             len2.append(i)
         elif len(s)==1:
-            email_list.extend(formats(s[0],'','','hotmail.com'))        
+            email_list.extend(formats(s[0],'','','gmail.com'))        
             l1.append(i)
         elif len(s)==3:
-            email_list.extend(formats(s[0],s[1],s[2],'hotmail.com'))    
+            email_list.extend(formats(s[0],s[1],s[2],'yahoo.com'))    
             l3.append(i)
         elif len(s)>3:
             ln.append(i)
