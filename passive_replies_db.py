@@ -23,10 +23,10 @@ import concurrent.futures
 import psycopg2
 import tweepy
 start_time = time.time()
-consumer_key='rNrnFupaEqKt0eb7hjbdHKdWg'
-consumer_secret= 'DTTMoQOrCBmngaXmOnFhrBjdjwtT54x0AbGvNwwuqyYNWwEvc7'
-access_token='1002268050513575936-gGrQUmDiMyCxO2Y88lc3ojqNzbtLGm'
-access_token_secret='G572YTe2S5TQTTaXhFvl1WyNopa8ilrkgWSlCXBZQwU4C'
+consumer_key='cQLpKHK4YWoH9DNMePH5OEONf'
+consumer_secret= 'FQIA1D48eqALlYvRYuic6dth4gurAcMwCVd0Z8ktDmgtVt9Zec'
+access_token='1002268050513575936-nj1aWbVHQZRvVrfaY0GXYlFnKktPeM'
+access_token_secret='2e91wc6xyiTvWmHq41LTiCPPKQNjKtple69zOUsWIcXjv'
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth,wait_on_rate_limit=True)
