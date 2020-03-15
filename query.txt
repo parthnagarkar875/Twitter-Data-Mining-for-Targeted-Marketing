@@ -93,31 +93,25 @@ the above data is to be multipled by 3 to get thane, navi mumbai and mumbai.
 Slot3: 
 J3:
 
-interior decorator mumbai
-ac purchase mumbai
-tv purchase mumbai
+(interior decorator mumbai) OR
+(ac purchase mumbai) OR
+(tv purchase mumbai) OR 
+(99acres mumbai) OR
+(housing.com mumbai) OR 
+(magicbricks mumbai) OR
+(nobroker mumbai) OR
+(luxury homes mumbai) OR
+(modern homes mumbai) OR 
+(spacious homes mumbai) OR 
+(clubhouse facilit mumbai) OR
+(gym facilit mumbai) OR
+(township builder mumbai) OR
+(premium builders in mumbai) 
 
-property portal names:
-99acres mumbai
-housing.com mumbai
-magicbricks mumbai
-nobroker mumbai
-
-luxury homes mumbai
-modern homes mumbai 
-spacious homes mumbai
-
-
-clubhouse facilit mumbai
-gym facilit mumbai
-
-township buidler mumbai
-premium builders in mumbai, vashi, etc. 
-
-latest constructions mumbai 
-latest development mumbai
-fast construction mumbai
-quality builder mumbai
+(latest constructions mumbai) OR
+(latest development mumbai) OR
+(fast construction mumbai) OR
+(quality builder mumbai)
 
 multiply by 3
 
@@ -136,6 +130,16 @@ expensive hotel names: taj, marriot, etc.
 
 
 
+
+
+
+
+
+New:
+(1 BHK in Mumbai) OR
+(2 BHK in Mumbai) OR 
+(3 BHK in Mumbai) OR
+(Mumbai Residency)
 
 
 
