@@ -41,27 +41,6 @@ Slot1:
 (buy mumbai apartment) OR 
 (purchase mumbai apartment) 
 
-Irrelevant:
-(book mumbai flat) OR 
-(book mumbai property) OR 
-(book mumbai house)
--sale
-
-Old:
-(who best builder mumbai) OR 
-(what best builder mumbai) OR
-
-
-
-Observations:
-Complains 
-Requests
-Jokes
-Ads
-News
-
-
-New queries:
 
 
 Slot2: 
