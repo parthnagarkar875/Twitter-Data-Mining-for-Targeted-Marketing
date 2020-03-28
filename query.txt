@@ -135,7 +135,15 @@ pepperfry
 urban ladder
 
 
-
+Business account:
+'decor','realt','digi','acre','resid','stock','group','article','project','commerc','brick','india','guru','new','market', \
+    'enterp','vastu','astro','estate','mall','hous','Thane','sky','room','home','flat','design','interior','furniture','trend', \
+    'pack','build','work','propert','prop','vastu','gym','loan','luxury','bloomberg','business','direct','time',\
+    'revenue','day','bank','agen','job','minis','corpo','tech', \
+    'boss','nation','associat','develop','broth','invest','people','dna','media','break','bombay','mumbai','thane','lodha','hiranandani','world','estate','logis','team', \
+    'consul','connec','school','tour','finan','asia','multi','apart','hospi','floor','repor','fashion','exhibition','trip','classif','wall','football','cricket',\
+    'welfare','history','income','height','shop','global','hotel','restaurant','office','environ','proje','wood','rent','deal','sale','press','craig',\
+    'bandra','pepper','noise'
 
 
 
