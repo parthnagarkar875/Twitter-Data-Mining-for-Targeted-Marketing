@@ -31,10 +31,10 @@ url_list=list()
 username_list=list()
 user_profile_list=list()
 stored_tweets=list()
-consumer_key='cQLpKHK4YWoH9DNMePH5OEONf'
-consumer_secret= 'FQIA1D48eqALlYvRYuic6dth4gurAcMwCVd0Z8ktDmgtVt9Zec'
-access_token='1002268050513575936-nj1aWbVHQZRvVrfaY0GXYlFnKktPeM'
-access_token_secret='2e91wc6xyiTvWmHq41LTiCPPKQNjKtple69zOUsWIcXjv'
+consumer_key=''
+consumer_secret= ''
+access_token=''
+access_token_secret=''
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 
